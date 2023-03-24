@@ -1,0 +1,39 @@
+{
+  "name": "redbox/redbox-package-skeleton",
+  "description": "",
+  "keywords": [],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Johnny Mast",
+      "email": "mastjohnny@gmail.com",
+      "homepage": "https://github.com/johnnymast",
+      "role": "lead"
+    }
+  ],
+  "require": {
+    "php": ">=8.0"
+  },
+  "require-dev": {
+    "pestphp/pest": "^1.22"
+  },
+  "autoload": {
+    "psr-4": {
+      "Redbox\\Validation\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Redbox\\Validation\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  }
+}
