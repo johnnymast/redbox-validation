@@ -3,17 +3,29 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/johnnymast/redbox-package-skeleton/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/johnnymast/redbox-package-skeleton/?branch=master)
 
 # Redbox-package-skeleton
- 
+
 This is just a skeleton for my php packages.
 
-## installation 
+## installation
 
 ```bash
 $ composer create-project -sdev redbox/redbox-package-skeleton ./skel/
 ```
 
+## Usage
 
+```php 
+try {
+   $validator = new Redbox\Validation\Validator(['test' => true]);
+   $data = $validator->validate(['test' => 'boolean']);
 
+    // Success
+    print_r($data);
+
+} catch (ValidationException $e) {
+   print_r($validator->getErrors());
+}
+```
 
 ## License
 
