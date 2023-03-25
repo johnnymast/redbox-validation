@@ -1,6 +1,7 @@
 <?php
 
 
+use Redbox\Validation\Exceptions\ValidationException;
 use Redbox\Validation\Validator;
 
 test('value 1 should not be considered a boolean', function () {
@@ -8,9 +9,11 @@ test('value 1 should not be considered a boolean', function () {
         'field' => 1,
     ]);
 
-    expect($validator->validate([
-       'field' => 'boolean'
-    ]))->toThrow(\Redbox\Validation\Exceptions\ValidationException::class, "Validator failed");
+    expect(
+        fn() => $validator->validate([
+            'field' => 'boolean'
+        ])
+    )->toThrow(ValidationException::class, "Validator failed");
 
     $errors = $validator->getErrors();
     expect(count($errors))->toEqual(1);
@@ -21,9 +24,11 @@ test('value \'true\' should not be considered a boolean', function () {
         'field' => 'true',
     ]);
 
-    expect($validator->validate([
-        'field' => 'boolean'
-    ]))->toThrow(\Redbox\Validation\Exceptions\ValidationException::class, "Validator failed");
+    expect(
+        fn() => $validator->validate([
+            'field' => 'boolean'
+        ])
+    )->toThrow(ValidationException::class, "Validator failed");
 
     $errors = $validator->getErrors();
     expect(count($errors))->toEqual(1);
@@ -47,9 +52,11 @@ test('value 0 should not be considered a boolean', function () {
         'field' => 0,
     ]);
 
-    expect($validator->validate([
-        'field' => 'boolean'
-    ]))->toThrow(\Redbox\Validation\Exceptions\ValidationException::class, "Validator failed");
+    expect(
+        fn() => $validator->validate([
+            'field' => 'boolean'
+        ])
+    )->toThrow(ValidationException::class, "Validator failed");
 
     $errors = $validator->getErrors();
     expect(count($errors))->toEqual(1);
@@ -60,9 +67,11 @@ test('value \'false\' should not be considered a boolean', function () {
         'field' => 'false',
     ]);
 
-    expect($validator->validate([
-        'field' => 'boolean'
-    ]))->toThrow(\Redbox\Validation\Exceptions\ValidationException::class, "Validator failed");
+    expect(
+        fn() => $validator->validate([
+            'field' => 'boolean'
+        ])
+    )->toThrow(ValidationException::class, "Validator failed");
 
     $errors = $validator->getErrors();
     expect(count($errors))->toEqual(1);

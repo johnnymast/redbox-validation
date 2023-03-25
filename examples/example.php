@@ -8,8 +8,11 @@ require __DIR__ . '/../vendor/autoload.php';
 
 
 try {
-    $validator = new Redbox\Validation\Validator(['test' => true]);
-    $data = $validator->validate(['test' => 'boolean']);
+    $validator = new Validator([
+        'field' => '1',
+    ]);
+
+    $data = $validator->validate(['field' => 'boolean']);
 
     // Success
     print_r($data);
