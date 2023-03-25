@@ -1,6 +1,6 @@
 <?php
 
-namespace Redbox\Validation\Exception;
+namespace Redbox\Validation\Exceptions;
 
 class ValidationException extends \Exception
 {

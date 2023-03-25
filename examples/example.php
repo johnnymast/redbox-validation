@@ -1,23 +1,21 @@
 <?php
 
 use Redbox\Validation\Contracts\RuleInterface;
+use Redbox\Validation\Exceptions\ValidationException;
 use Redbox\Validation\Validator;
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 
+try {
+    $validator = new Redbox\Validation\Validator(['test' => true]);
+    $data = $validator->validate(['test' => 'boolean']);
 
-$instance = (new Redbox\Validation\Validator())
-    ->validate('test', 'boolean');
+    // Success
+    print_r($data);
 
-
-$closure = function (RuleInterface $rule) {};
-
-$validator = new Validator();
-$validator->validate('foo', $closure);
-
-print_r($validator->getRules());
-//    expect($validator->getRules())->toMatchArray([
-//        'foo' => [$closure]
-//    ]);
-exit;
+} catch (ValidationException $e) {
+    print_r($validator->getErrors());
+}
+//
+//$instance->validate("foo", (float)1.0);

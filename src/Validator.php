@@ -1,63 +1,169 @@
 <?php
 
+/*
+ * This file is part of the Redbox-validator package.
+ *
+ * (c) Johnny Mast <mastjohnny@gmail.com
+ *
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Redbox\Validation;
 
-use Redbox\Validation\Resolver\Resolver;
-use Redbox\Validation\ValidationRules\TypeDefinitionRules;
+use Redbox\Validation\Exceptions\ValidationException;
+use Redbox\Validation\Exceptions\ValidationDefinitionException;
 
+/**
+ * Validator.php
+ *
+ * The main validator class.
+ *
+ * PHP version 8.1
+ *
+ * @category Resolver
+ * @package  Core
+ * @author   Johnny Mast <mastjohnny@gmail.com>
+ * @license  https://opensource.org/licenses/MIT MIT
+ * @link     https://github.com/johnnymast/redbox-validation
+ * @since    1.0
+ */
 class Validator
 {
-    protected string $ruleSperator = '|';
-
     protected array $rules = [];
-    protected array $target = [];
+    protected array $types = [];
+    protected array $errors = [];
 
-    public function __construct(array $target = [])
+    /**
+     * Validator constructor.
+     *
+     * @param array $target The array to validate.
+     */
+    public function __construct(protected array $target = [])
     {
-        $this->target = $target;
-
         $this->defineRules();
     }
 
     private function defineRules()
     {
-        $this->definedRules = Resolver::resolveRules([
-            TypeDefinitionRules::class,
+        $this->types = \Redbox\Validation\TypeResolver::resolveTypes([
+            \Redbox\Validation\ValidationTypes\TypeDefinitions::class,
         ]);
     }
 
+    /**
+     * Return the defined rules. This function
+     * is mostly used for testing.
+     *
+     * @return array
+     */
     public function getRules(): array
     {
         return $this->rules;
     }
 
-    public function validate(string $key, $rules): Validator
+    /**
+     * @param $key
+     * @param $rules
+     *
+     * @return void
+     * @throws ValidationDefinitionException
+     */
+    private function addRule($key, $rules): void
+    {
+        $this->rules[$key] = match (strtolower(get_debug_type($rules))) {
+            'closure' => [$rules],
+            'array' => $rules,
+            'string' => (strpos($rules, '|') > -1) ? explode('|', $rules) : [$rules],
+            default => throw new ValidationDefinitionException("Unknown validation rule type."),
+        };
+
+
+        // TODO: validate if rule keys exist in target
+        // TODO: validate rules
+    }
+
+    /**
+     **
+     * Validate the target array.
+     *
+     * <code>
+     * <?php
+     * try {
+     *     $validator = new Redbox\Validation\Validator(['test' => true]);
+     *     $data = $validator->validate(['test' => 'boolean']);
+     *
+     *     // Success
+     *     print_r($data);
+     *
+     * } catch (ValidationException $e) {
+     *     print_r($validator->getErrors());
+     * }
+     * ?>
+     * </code>
+     *
+     * @param array $definitions The validation rules.
+     *
+     * @returns array
+     */
+    public function validate(array $definitions): array
     {
 
-        if (is_array($rules)) {
-            $this->rules[$key] = $rules;
-        } else if (is_string($rules)) {
+        $this->errors = $this->rules = [];
 
-            if (strpos($rules, $this->ruleSperator) > -1) {
-                $this->rules[$key] = explode($this->ruleSperator, $rules);
-            } else {
-                $this->rules[$key] = [$rules];
-            }
-        } else if (is_callable($rules)) {
-            $this->rules[$key] = [$rules];
+        foreach ($definitions as $key => $rules) {
+            $this->addRule($key, $rules);
         }
 
+        foreach ($this->rules as $key => $rule) {
+            foreach ($rule as $name) {
+                if (isset($this->types[$name]) && isset($this->target[$key])) {
+                    $this->types[$name]->run($key, $this->target[$key], $this);
+                }
+            }
+        }
 
-        //throw new \ValidationDefinitionException("Could not parse rule set.");
+        if ($this->hasErrors()) {
+            throw new ValidationException("Validator failed");
+        }
 
-
-        return $this;
-
+        return $this->target;
     }
 
-    function validateRules()
+    /**
+     * The context will call this function is a test fails.
+     *
+     * @param string $key   The name of the key in the target array.
+     * @param string $error The error string.
+     *
+     * @return void
+     */
+    public function addError(string $key, string $error)
     {
+        $this->errors[$key] = $error;
     }
 
+    /**
+     * This function can be called to check
+     * if there are any validation errors.
+     *
+     * @return bool
+     */
+    public function hasErrors(): bool
+    {
+        return !empty($this->errors);
+    }
 
+    /**
+     * Return the errors.
+     *
+     * @return array
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
 }
