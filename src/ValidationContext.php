@@ -53,7 +53,7 @@ class ValidationContext
      *
      * @var bool
      */
-    protected bool $didPass = true;
+    protected bool $passes = true;
 
     /**
      * ValidationContext constructor.
@@ -77,14 +77,25 @@ class ValidationContext
     }
 
     /**
-     * Indicates if the test
-     * is passing or not.
+     * Returns true if the
+     * test has failed.
      *
      * @return bool
      */
-    public function isPassing(): bool
+    public function fails(): bool
     {
-        return $this->didPass;
+        return ($this->passes === false);
+    }
+
+    /**
+     * Returns true if the
+     * test was successful.
+     *
+     * @return bool
+     */
+    public function passes(): bool
+    {
+        return $this->passes;
     }
 
     /**
@@ -141,7 +152,7 @@ class ValidationContext
         $this->value = $value;
         $this->target = $target;
 
-        $this->didPass = call_user_func($this->method, $this);
+        $this->passes = call_user_func($this->method, $this);
         return $this;
     }
 }

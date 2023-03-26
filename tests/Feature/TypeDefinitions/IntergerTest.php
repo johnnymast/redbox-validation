@@ -14,10 +14,10 @@
 use Redbox\Validation\Exceptions\ValidationException;
 use Redbox\Validation\Validator;
 
-dataset('other_types_then_string', [
+dataset('other_types_then_integer', [
     null,
     true,
-    1,
+    "string",
     2.0,
     [],
     new stdClass(),
@@ -25,36 +25,48 @@ dataset('other_types_then_string', [
     // Resource how ?
 ]);
 
-test('value \'test\' should be considered a string', function () {
+test('value 10 should be considered a integer', function () {
 
     $validator = new Validator([
-        'field' => 'test',
+        'field' => 10,
     ]);
 
     $validator->validate([
-        'field' => 'string'
+        'field' => 'integer'
     ]);
 
     $errors = $validator->errors();
     expect(count($errors))->toEqual(0);
 });
 
-test('Other types then strings should fail', function (mixed $type = null) {
+test('[ALIAS] value 10 should be considered a int', function () {
+
+    $validator = new Validator([
+        'field' => 10,
+    ]);
+
+    $validator->validate([
+        'field' => 'integer'
+    ]);
+
+    $errors = $validator->errors();
+    expect(count($errors))->toEqual(0);
+});
+
+test('Other types then integers should fail', function (mixed $type = null) {
     $validator = new Validator([
         'field' => $type,
     ]);
 
-    $this->setName("other types then strings should fail testing with type ".get_debug_type($type));
-
     expect(
         fn() => $validator->validate([
-            'field' => 'string'
+            'field' => 'integer'
         ])
     )->toThrow(ValidationException::class, "Validator failed");
 
 
     $errors = $validator->errors();
-    expect($errors['field'])->toEqual("Field field is not of type string.")
+    expect($errors['field'])->toEqual("Field field is not of type integer.")
         ->and(count($errors))->toEqual(1);
 
-})->with('other_types_then_string');
+})->with('other_types_then_integer');

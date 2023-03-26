@@ -20,6 +20,7 @@ use Redbox\Validation\ValidationContext;
 class TypeDefinitions
 {
     #[ValidationRule('boolean')]
+    #[ValidationRule('bool')]
     public function isBoolean(ValidationContext $context): bool
     {
         return ($context->keyExists() && is_bool($context->getValue()))
@@ -31,5 +32,13 @@ class TypeDefinitions
     {
         return ($context->keyExists() && is_string($context->getValue()))
             or $context->addError("Field {$context->getKey()} is not of type string.");
+    }
+
+    #[ValidationRule('integer')]
+    #[ValidationRule('int')]
+    public function integer(ValidationContext $context): bool
+    {
+        return ($context->keyExists() && is_integer($context->getValue()))
+            or $context->addError("Field {$context->getKey()} is not of type integer.");
     }
 }

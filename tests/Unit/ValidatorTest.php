@@ -96,15 +96,16 @@ test("Validation::validate() will execute single closures you pass it.", functio
         fn() => $this->validator->validate([
             'foo' => $closure
         ])
-    )->toThrow(ValidationException::class, "Validator failed");
-
-    expect($this->validator->didPass())->toBeFalse();
+    )->toThrow(ValidationException::class, "Validator failed")
+        ->and($this->validator->passes())->toBeFalsy()
+        ->and($this->validator->fails())->toBeTruthy();
 
     $closure = fn(ValidationContext $context) => true;
     $validator = new Validator(['foo' => false]);
     $validator->validate(['foo' => $closure]);
 
-    expect($validator->didPass())->toBeTrue();
+    expect($validator->passes())->toBeTruthy()
+        ->and($validator->fails())->toBeFalsy();
 });
 
 test("Validation::validate() will execute multiple closures you pass it.", function () {
@@ -116,9 +117,8 @@ test("Validation::validate() will execute multiple closures you pass it.", funct
         fn() => $this->validator->validate([
             'foo' => [$closureA, $closureB]
         ])
-    )->toThrow(ValidationException::class, "Validator failed");
-
-    expect($this->validator->didPass())->toBeFalse();
+    )->toThrow(ValidationException::class, "Validator failed")
+        ->and($this->validator->fails())->toBeTruthy();
 
     $closureA = fn(ValidationContext $context) => true;
     $closureB = fn(ValidationContext $context) => true;
@@ -126,7 +126,7 @@ test("Validation::validate() will execute multiple closures you pass it.", funct
     $validator = new Validator(['foo' => false]);
     $validator->validate(['foo' => [$closureA, $closureB]]);
 
-    expect($validator->didPass())->toBeTrue();
+    expect($validator->fails())->toBeFalsy();
 });
 
 test("Validator::validate() will throw an exception at unknown rule type.", function () {
@@ -138,7 +138,7 @@ test("Validator::validate() will throw an exception at unknown rule type.", func
 });
 
 
-test("Validation::hasErrors() will return true if a validation failed.", function() {
+test("Validation::hasErrors() if there are known errors.", function() {
 
     $validator = new Validator([
         'foo' => '',
@@ -150,7 +150,7 @@ test("Validation::hasErrors() will return true if a validation failed.", functio
         ])
     )->toThrow(ValidationException::class, "Validator failed");
 
-    $errors = $validator->getErrors();
+    $errors = $validator->errors();
 
     expect($validator->hasErrors())->toBeTrue()
         ->and($errors['foo'])->toEqual("Field foo is not of type boolean.")

@@ -49,7 +49,7 @@ class Validator
      *
      * @var bool
      */
-    protected bool $didPass = true;
+    protected bool $passes = true;
 
     /**
      * Validator constructor.
@@ -151,7 +151,7 @@ class Validator
     {
 
         $this->errors = $this->rules = [];
-        $this->didPass = true;
+        $this->passes = true;
         $fails = 0;
 
         foreach ($definitions as $key => $rules) {
@@ -167,17 +167,17 @@ class Validator
                     $context = $this->types[$name];
                 }
 
-                $didPass = $context->run($key, $this->target[$key] ?? '', $this->target, $this)
-                    ->isPassing();
+                $didFail = $context->run($key, $this->target[$key] ?? '', $this->target, $this)
+                    ->fails();
 
-                if (!$didPass) {
+                if ($didFail) {
                     $fails++;
                 }
             }
         }
 
         if ($fails > 0) {
-            $this->didPass = false;
+            $this->passes = false;
             throw new ValidationException("Validator failed");
         }
 
@@ -186,13 +186,23 @@ class Validator
 
     /**
      * Indicate if the validation
+     * has failed.
+     *
+     * @return bool
+     */
+    public function fails(): bool
+    {
+        return ($this->passes === false);
+    }
+
+    /**
+     * Indicate if the validation
      * has passed.
      *
      * @return bool
      */
-    public function didPass(): bool
-    {
-        return $this->didPass;
+    public function passes(): bool {
+        return $this->passes;
     }
 
     /**
@@ -224,7 +234,7 @@ class Validator
      *
      * @return array
      */
-    public function getErrors(): array
+    public function errors(): array
     {
         return $this->errors;
     }

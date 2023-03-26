@@ -9,12 +9,8 @@ require __DIR__ . '/../vendor/autoload.php';
 
 
 try {
-    $closure = function (RuleInterface $rule) {
-    };
 
-
-
-    $validator = new Validator(['foo' => '']);
+    $validator = new Validator(['foo' => new stdClass()]);
     $data = $validator->validate([
         'food' => 'boolean'
     ]);

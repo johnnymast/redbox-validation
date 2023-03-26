@@ -19,10 +19,20 @@ beforeEach(function () {
     $validator = new Validator([
         'field' => false,
     ]);
-    $validator->defineCustomTypes([
-        TestDefinitions::class
-    ]);
 });
+
+dataset('other_types_then_boolean', [
+    null,
+    "string",
+    1,
+    2.0,
+    [],
+    new stdClass(),
+    function() { },
+    // Resource how ?
+]);
+
+
 
 test('value false should be considered a boolean', function () {
 
@@ -34,7 +44,21 @@ test('value false should be considered a boolean', function () {
         'field' => 'boolean'
     ]);
 
-    $errors = $validator->getErrors();
+    $errors = $validator->errors();
+    expect(count($errors))->toEqual(0);
+});
+
+test('[ALIAS] value false should be considered a bool', function () {
+
+    $validator = new Validator([
+        'field' => false,
+    ]);
+
+    $validator->validate([
+        'field' => 'bool'
+    ]);
+
+    $errors = $validator->errors();
     expect(count($errors))->toEqual(0);
 });
 
@@ -48,7 +72,7 @@ test('value true should be considered a boolean', function () {
         'field' => 'boolean'
     ]);
 
-    $errors = $validator->getErrors();
+    $errors = $validator->errors();
     expect(count($errors))->toEqual(0);
 });
 
@@ -64,74 +88,24 @@ test('running the boolean type check on a non-existing key in the target array s
         ])
     )->toThrow(ValidationException::class, "Validator failed");
 
-    $errors = $validator->getErrors();
+    $errors = $validator->errors();
     expect(count($errors))->toEqual(1);
 });
 
-test('value 1 should not be considered a boolean', function () {
-
+test('Other types then integers should fail', function (mixed $type = null) {
     $validator = new Validator([
-        'myfield' => 1,
+        'field' => $type,
     ]);
 
     expect(
         fn() => $validator->validate([
-            'myfield' => 'boolean'
+            'field' => 'boolean'
         ])
     )->toThrow(ValidationException::class, "Validator failed");
 
-    $errors = $validator->getErrors();
-    expect($errors['myfield'])->toEqual("Field myfield is not of type boolean.");
-    expect(count($errors))->toEqual(1);
-});
 
-test('value \'true\' should not be considered a boolean', function () {
+    $errors = $validator->errors();
+    expect($errors['field'])->toEqual("Field field is not of type boolean.")
+        ->and(count($errors))->toEqual(1);
 
-    $validator = new Validator([
-        'myfield' => 'true',
-    ]);
-
-    expect(
-        fn() => $validator->validate([
-            'myfield' => 'boolean'
-        ])
-    )->toThrow(ValidationException::class, "Validator failed");
-
-    $errors = $validator->getErrors();
-    expect($errors['myfield'])->toEqual("Field myfield is not of type boolean.");
-    expect(count($errors))->toEqual(1);
-});
-
-test('value 0 should not be considered a boolean', function () {
-
-    $validator = new Validator([
-        'field' => 0,
-    ]);
-
-    expect(
-        fn() => $validator->validate([
-            'myfield' => 'boolean'
-        ])
-    )->toThrow(ValidationException::class, "Validator failed");
-
-    $errors = $validator->getErrors();
-    expect($errors['myfield'])->toEqual("Field myfield is not of type boolean.");
-    expect(count($errors))->toEqual(1);
-});
-
-test('value \'false\' should not be considered a boolean', function () {
-
-    $validator = new Validator([
-        'myfield' => 'false',
-    ]);
-
-    expect(
-        fn() => $validator->validate([
-            'myfield' => 'boolean'
-        ])
-    )->toThrow(ValidationException::class, "Validator failed");
-
-    $errors = $validator->getErrors();
-    expect($errors['myfield'])->toEqual("Field myfield is not of type boolean.");
-    expect(count($errors))->toEqual(1);
-});
+})->with('other_types_then_boolean');
