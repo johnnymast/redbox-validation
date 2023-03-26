@@ -7,7 +7,7 @@
 This is just a skeleton for my php packages.
 
 [![Unit Tests](https://github.com/johnnymast/redbox-validation/actions/workflows/Tests.yml/badge.svg)](https://github.com/johnnymast/redbox-validation/actions/workflows/Tests.yml)
-
+[![PhpCS](https://github.com/johnnymast/redbox-validation/actions/workflows/Phpcs.yaml/badge.svg)](https://github.com/johnnymast/redbox-validation/actions/workflows/Phpcs.yaml)
 
 ## installation
 
