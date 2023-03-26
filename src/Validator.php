@@ -132,7 +132,6 @@ class Validator
     }
 
     /**
-     * *
      * Validate the target array.
      *
      * <code>
@@ -152,7 +151,9 @@ class Validator
      *
      * @param array $definitions The validation rules.
      *
-     * @returns array
+     * @return array
+     * @throws ValidationDefinitionException
+     * @throws ValidationException
      */
     public function validate(array $definitions): array
     {
