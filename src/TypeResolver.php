@@ -9,12 +9,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+/*
+ * This file is part of the Redbox-validator package.
+ *
+ * (c) Johnny Mast <mastjohnny@gmail.com
+ *
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace Redbox\Validation;
 
 use Redbox\Validation\Attributes\ValidationRule;
-use Redbox\Validation\ValidationTypes\TypeDefinition;
 
 /**
  * Resolver.php
@@ -32,7 +41,6 @@ use Redbox\Validation\ValidationTypes\TypeDefinition;
  */
 class TypeResolver
 {
-
     /**
      * Filter validation types defined by the given attribute.
      *
@@ -53,7 +61,7 @@ class TypeResolver
 
             foreach ($attributes as $attribute) {
                 $type = $attribute->newInstance();
-                $callables[$type->name] = new Context($type->name, [$instance, $method->name]);
+                $callables[$type->name] = new ValidationContext($type->name, [$instance, $method->name]);
             }
         }
 

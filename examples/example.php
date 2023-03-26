@@ -2,22 +2,28 @@
 
 use Redbox\Validation\Contracts\RuleInterface;
 use Redbox\Validation\Exceptions\ValidationException;
+use Redbox\Validation\ValidationContext;
 use Redbox\Validation\Validator;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 
 try {
-    $validator = new Validator([
-        'field' => '1',
+    $closure = function (RuleInterface $rule) {
+    };
+
+    $validator = new Validator(['foo' => '']);
+    $data = $validator->validate([
+        'food' => fn(ValidationContext $context) => false
     ]);
 
-    $data = $validator->validate(['field' => 'boolean']);
-
     // Success
-    print_r($data);
+    echo "OI";
+    var_dump($validator->didPass());
 
 } catch (ValidationException $e) {
+
+    var_dump($validator->didPass());
     print_r($validator->getErrors());
 }
 //

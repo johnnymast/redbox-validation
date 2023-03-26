@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Redbox-validator package.
  *
  * (c) Johnny Mast <mastjohnny@gmail.com
@@ -17,25 +17,12 @@ namespace Redbox\Validation;
 use Redbox\Validation\Exceptions\ValidationException;
 use Redbox\Validation\Exceptions\ValidationDefinitionException;
 
-/**
- * Validator.php
- *
- * The main validator class.
- *
- * PHP version 8.1
- *
- * @category Resolver
- * @package  Core
- * @author   Johnny Mast <mastjohnny@gmail.com>
- * @license  https://opensource.org/licenses/MIT MIT
- * @link     https://github.com/johnnymast/redbox-validation
- * @since    1.0
- */
 class Validator
 {
     protected array $rules = [];
     protected array $types = [];
     protected array $errors = [];
+    protected bool $didPass = true;
 
     /**
      * Validator constructor.
@@ -44,14 +31,21 @@ class Validator
      */
     public function __construct(protected array $target = [])
     {
-        $this->defineRules();
+        $this->defineTypes();
     }
 
-    private function defineRules()
+    private function defineTypes()
     {
-        $this->types = \Redbox\Validation\TypeResolver::resolveTypes([
-            \Redbox\Validation\ValidationTypes\TypeDefinitions::class,
-        ]);
+        $this->types = \Redbox\Validation\TypeResolver::resolveTypes(
+            [
+                \Redbox\Validation\ValidationTypes\TypeDefinitions::class,
+            ]
+        );
+    }
+
+    public function defineCustomTypes(array $classes = [])
+    {
+        $this->types = array_merge($this->types, \Redbox\Validation\TypeResolver::resolveTypes($classes));
     }
 
     /**
@@ -66,13 +60,13 @@ class Validator
     }
 
     /**
-     * @param $key
-     * @param $rules
+     * @param string $key
+     * @param        $rules
      *
      * @return void
      * @throws ValidationDefinitionException
      */
-    private function addRule($key, $rules): void
+    private function addRule(string $key, mixed $rules): void
     {
         $this->rules[$key] = match (strtolower(get_debug_type($rules))) {
             'closure' => [$rules],
@@ -81,13 +75,22 @@ class Validator
             default => throw new ValidationDefinitionException("Unknown validation rule type."),
         };
 
+        foreach ($this->rules as $key => $types) {
+            foreach ($types as $type) {
+                if (!is_callable($type)) {
+                    if (!isset($this->types[$type])) {
+                        throw new ValidationDefinitionException("Unknown validation rule type.");
+                    }
+                }
+            }
+        }
 
-        // TODO: validate if rule keys exist in target
         // TODO: validate rules
+        // TODO: Validate closures
     }
 
     /**
-     **
+     * *
      * Validate the target array.
      *
      * <code>
@@ -113,6 +116,8 @@ class Validator
     {
 
         $this->errors = $this->rules = [];
+        $this->didPass = true;
+        $fails = 0;
 
         foreach ($definitions as $key => $rules) {
             $this->addRule($key, $rules);
@@ -120,17 +125,33 @@ class Validator
 
         foreach ($this->rules as $key => $rule) {
             foreach ($rule as $name) {
-                if (isset($this->types[$name]) && isset($this->target[$key])) {
-                    $this->types[$name]->run($key, $this->target[$key], $this);
+                $context = null;
+                if (is_callable($name)) {
+                    $context = new ValidationContext('closure', $name);
+                } elseif (isset($this->types[$name])) {
+                    $context = $this->types[$name];
+                }
+
+                $didPass = $context->run($key, $this->target[$key] ?? '', $this->target, $this)
+                    ->isPassing();
+
+                if (!$didPass) {
+                    $fails++;
                 }
             }
         }
 
-        if ($this->hasErrors()) {
+        if ($fails > 0) {
+            $this->didPass = false;
             throw new ValidationException("Validator failed");
         }
 
         return $this->target;
+    }
+
+    public function didPass(): bool
+    {
+        return $this->didPass;
     }
 
     /**

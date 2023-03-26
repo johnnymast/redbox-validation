@@ -1,23 +1,33 @@
 <?php
 
+/*
+ * This file is part of the Redbox-validator package.
+ *
+ * (c) Johnny Mast <mastjohnny@gmail.com
+ *
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Redbox\Validation\ValidationTypes;
 
 use Redbox\Validation\Attributes\ValidationRule;
-use Redbox\Validation\Context;
-use Redbox\Validation\Validator;
+use Redbox\Validation\ValidationContext;
 
 class TypeDefinitions
 {
-
     #[ValidationRule('boolean')]
-    public function isBoolean(Context $test): bool
+    public function isBoolean(ValidationContext $context): bool
     {
-        return is_bool($test->getValue()) or $test->setError("Field {$test->getKey()} is not of type boolean.");
+        return ($context->keyExists() && is_bool($context->getValue()))
+            or $context->setError("Field {$context->getKey()} is not of type boolean.");
     }
 
-    #[ValidationRule('booleans')]
-    public function bleep(): void
+    #[ValidationRule('string')]
+    public function string(ValidationContext $context): bool
     {
-
+        return ($context->keyExists() && is_string($context->getValue()))
+            or $context->setError("Field {$context->getKey()} is not of type string.");
     }
 }
