@@ -1,4 +1,4 @@
-# Redbox-valiation (WIP)
+# Redbox-valiation
 
 Redbox-valiation is a simple to use validation class. The implementation is based on Laravel's (but no a rewrite of)
 validation package but has no external when used in your project.

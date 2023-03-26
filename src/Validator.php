@@ -16,7 +16,6 @@ namespace Redbox\Validation;
 
 use Redbox\Validation\Exceptions\ValidationDefinitionException;
 use Redbox\Validation\ValidationTypes\TypeDefinitions;
-use Redbox\Validation\Exceptions\ValidationException;
 
 class Validator
 {
@@ -119,9 +118,6 @@ class Validator
             'string' => (strpos($rules, '|') > -1) ? explode('|', $rules) : [$rules],
             default => throw new ValidationDefinitionException("Unknown validation rule type."),
         };
-
-        // TODO: validate rules
-        // TODO: Validate closures
     }
 
     /**
@@ -129,17 +125,25 @@ class Validator
      *
      * <code>
      * <?php
-     * try {
-     *     $validator = new Redbox\Validation\Validator(['test' => true]);
-     *     $data = $validator->validate(['test' => 'boolean']);
+     * use Redbox\Validation\Validator;
      *
-     *     // Success
-     *     print_r($data);
+     * $validator = new Validator([
+     *     'foo' => 'The quick brown fox jumps over the lazy dog'
+     * ]);
      *
-     * } catch (ValidationException $e) {
-     *     print_r($validator->getErrors());
+     * $data = $validator->validate([
+     *     'food' => 'string'
+     * ]);
+     *
+     * // Validator::passes() is also
+     * // available.
+     * if ($validator->fails()) {
+     *
+     *  //  Handle errors use $validator->errors()
+     *  // to get the errors.
+     *
      * }
-     * ?>
+     *
      * </code>
      *
      * @param array $definitions The validation rules.
