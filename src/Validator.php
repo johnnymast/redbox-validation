@@ -171,7 +171,8 @@ class Validator
                     key: $key,
                     value: $this->target[$key] ?? '',
                     target: $this->target,
-                    validator: $this)
+                    validator: $this
+                )
                     ->fails();
 
                 if ($didFail) {
