@@ -12,7 +12,7 @@
 /*
  * This file is part of the Redbox-validator package.
  *
- * (c) Johnny Mast <mastjohnny@gmail.com
+ * (c) Johnny Mast <mastjohnny@gmail.com>
  *
  *
  * For the full copyright and license information, please view the LICENSE
@@ -25,20 +25,6 @@ namespace Redbox\Validation;
 
 use Redbox\Validation\Attributes\ValidationRule;
 
-/**
- * Resolver.php
- *
- * A Support class that will find validation types.
- *
- * PHP version 8.1
- *
- * @category Resolver
- * @package  Redbox-validator
- * @author   Johnny Mast <mastjohnny@gmail.com>
- * @license  https://opensource.org/licenses/MIT MIT
- * @link     https://github.com/johnnymast/redbox-validation
- * @since    1.0
- */
 class TypeResolver
 {
     /**
