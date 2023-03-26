@@ -17,30 +17,49 @@ namespace Redbox\Validation;
 class ValidationContext
 {
     /**
+     * Reference to the validator
+     * class.
+     *
      * @var Validator
      */
     protected Validator $validator;
+
     /**
-     * @var string
-     */
-    public string $error = '';
-    /**
+     * The value to validate.
+     *
      * @var mixed|string
      */
     public mixed $value = '';
+
     /**
+     * The key in the target
+     * array.
+     *
      * @var string
      */
     public string $key = '';
 
+    /**
+     * Reference to the target
+     * array.
+     *
+     * @var array
+     */
     protected array $target = [];
 
+    /**
+     * Indicator to see if
+     * the validation passed.
+     *
+     * @var bool
+     */
     protected bool $didPass = true;
 
     /**
-     * @param string $name
-     * @param array  $target
-     * @param mixed  $method
+     * ValidationContext constructor.
+     *
+     * @param string $name   The name of the validation type.
+     * @param mixed  $method The method to call to validate the value.
      */
     public function __construct(public string $name, protected mixed $method)
     {
@@ -57,20 +76,21 @@ class ValidationContext
         return isset($this->target[$this->key]);
     }
 
+    /**
+     * Indicates if the test
+     * is passing or not.
+     *
+     * @return bool
+     */
     public function isPassing(): bool
     {
         return $this->didPass;
     }
 
     /**
-     * @return array
-     */
-    public function getTarget(): array
-    {
-        return $this->target;
-    }
-
-    /**
+     * Return the value of the
+     * key in the target array.
+     *
      * @return mixed
      */
     public function getValue(): mixed
@@ -79,6 +99,9 @@ class ValidationContext
     }
 
     /**
+     * Return the name of the
+     * key in the target array.
+     *
      * @return string
      */
     public function getKey(): string
@@ -87,11 +110,13 @@ class ValidationContext
     }
 
     /**
-     * @param string $error
+     * Add an error in the validator.
+     *
+     * @param string $error The error string.
      *
      * @return bool
      */
-    public function setError(string $error): bool
+    public function addError(string $error): bool
     {
         if ($this->validator) {
             $this->validator->addError($this->key, $error);

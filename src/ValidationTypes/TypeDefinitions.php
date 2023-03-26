@@ -23,13 +23,13 @@ class TypeDefinitions
     public function isBoolean(ValidationContext $context): bool
     {
         return ($context->keyExists() && is_bool($context->getValue()))
-            or $context->setError("Field {$context->getKey()} is not of type boolean.");
+            or $context->addError("Field {$context->getKey()} is not of type boolean.");
     }
 
     #[ValidationRule('string')]
     public function string(ValidationContext $context): bool
     {
         return ($context->keyExists() && is_string($context->getValue()))
-            or $context->setError("Field {$context->getKey()} is not of type string.");
+            or $context->addError("Field {$context->getKey()} is not of type string.");
     }
 }
