@@ -12,9 +12,11 @@ try {
     $closure = function (RuleInterface $rule) {
     };
 
+
+
     $validator = new Validator(['foo' => '']);
     $data = $validator->validate([
-        'food' => fn(ValidationContext $context) => false
+        'food' => 'boolean'
     ]);
 
     // Success

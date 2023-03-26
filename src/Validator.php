@@ -55,6 +55,8 @@ class Validator
      * Validator constructor.
      *
      * @param array $target The array to validate.
+     *
+     * @throws \ReflectionException
      */
     public function __construct(protected array $target = [])
     {
@@ -83,7 +85,7 @@ class Validator
      * @return void
      * @throws \ReflectionException
      */
-    public function defineCustomTypes(array $classes = [])
+    public function defineCustomTypes(array $classes = []): void
     {
         $this->types = array_merge($this->types, \Redbox\Validation\TypeResolver::resolveTypes($classes));
     }
@@ -116,16 +118,6 @@ class Validator
             'string' => (strpos($rules, '|') > -1) ? explode('|', $rules) : [$rules],
             default => throw new ValidationDefinitionException("Unknown validation rule type."),
         };
-
-        foreach ($this->rules as $key => $types) {
-            foreach ($types as $type) {
-                if (!is_callable($type)) {
-                    if (!isset($this->types[$type])) {
-                        throw new ValidationDefinitionException("Unknown validation rule type.");
-                    }
-                }
-            }
-        }
 
         // TODO: validate rules
         // TODO: Validate closures
@@ -211,7 +203,7 @@ class Validator
      *
      * @return void
      */
-    public function addError(string $key, string $error)
+    public function addError(string $key, string $error): void
     {
         $this->errors[$key] = $error;
     }

@@ -138,3 +138,21 @@ test("Validator::validate() will throw an exception at unknown rule type.", func
 });
 
 
+test("Validation::hasErrors() will return true if a validation failed.", function() {
+
+    $validator = new Validator([
+        'foo' => '',
+    ]);
+
+    expect(
+        fn() =>$validator->validate([
+            'foo' => 'boolean'
+        ])
+    )->toThrow(ValidationException::class, "Validator failed");
+
+    $errors = $validator->getErrors();
+
+    expect($validator->hasErrors())->toBeTrue()
+        ->and($errors['foo'])->toEqual("Field foo is not of type boolean.")
+        ->and(count($errors))->toEqual(1);
+});
