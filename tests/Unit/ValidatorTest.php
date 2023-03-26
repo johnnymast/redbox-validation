@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Redbox\Validation\Tests\Unit;
 
 use Redbox\Validation\Exceptions\ValidationDefinitionException;
+use Redbox\Validation\Tests\Types\TestDefinitions;
 use Redbox\Validation\ValidationContext;
 use Redbox\Validation\Validator;
 
@@ -23,176 +24,210 @@ beforeEach(function () {
         'foo' => false,
     ]);
     $this->validator->defineCustomTypes([
-        \Redbox\Validation\Tests\Types\TestDefinitions::class
+        TestDefinitions::class
     ]);
 });
 
-test('Validator::validate() can be called with a string of one single rule', function () {
+test(
+    'Validator::validate() can be called with a string of one single rule',
+    function () {
 
-    $this->validator->validate([
-        'foo' => 'bar'
-    ]);
+        $this->validator->validate([
+            'foo' => 'bar'
+        ]);
 
-    expect($this->validator->getRules())->toMatchArray([
-        'foo' => ['bar']
-    ]);
-});
+        expect($this->validator->getRules())->toMatchArray([
+            'foo' => ['bar']
+        ]);
+    }
+);
 
-test('Validator::validate() can be called with a string of multiple rules', function () {
+test(
+    'Validator::validate() can be called with a string of multiple rules',
+    function () {
 
-    $this->validator->validate(['foo' => 'bar|baz']);
+        $this->validator->validate(['foo' => 'bar|baz']);
 
-    expect($this->validator->getRules())->toMatchArray([
-        'foo' => ['bar', 'baz']
-    ]);
-});
+        expect($this->validator->getRules())->toMatchArray([
+            'foo' => ['bar', 'baz']
+        ]);
+    }
+);
 
-test('Validator::validate() can be called with an array of rules', function () {
+test(
+    'Validator::validate() can be called with an array of rules',
+    function () {
 
-    $this->validator->validate(['foo' => ['bar', 'baz', 'qux']]);
+        $this->validator->validate(['foo' => ['bar', 'baz', 'qux']]);
 
-    expect($this->validator->getRules())->toMatchArray([
-        'foo' => ['bar', 'baz', 'qux']
-    ]);
-});
+        expect($this->validator->getRules())->toMatchArray([
+            'foo' => ['bar', 'baz', 'qux']
+        ]);
+    }
+);
 
-test('Validator::validate() can be called with an array of rules classes or rule names', function () {
+test(
+    'Validator::validate() can be called with an array of rules classes or rule names',
+    function () {
 
-    $this->validator->validate(['foo' => ['bar', 'baz', 'qux']]);
+        $this->validator->validate(['foo' => ['bar', 'baz', 'qux']]);
 
-    expect($this->validator->getRules())->toMatchArray([
-        'foo' => ['bar', 'baz', 'qux']
-    ]);
-});
+        expect($this->validator->getRules())->toMatchArray([
+            'foo' => ['bar', 'baz', 'qux']
+        ]);
+    }
+);
 
-test('Validator::validate() rule can be one closure.', function () {
+test(
+    'Validator::validate() rule can be one closure.',
+    function () {
 
-    $closure = function (ValidationContext $context): bool {
-        return true;
-    };
+        $closure = function (ValidationContext $context): bool {
+            return true;
+        };
 
-    $this->validator->validate(['foo' => $closure]);
+        $this->validator->validate(['foo' => $closure]);
 
-    expect($this->validator->getRules())->toMatchArray([
-        'foo' => [$closure]
-    ]);
-});
+        expect($this->validator->getRules())->toMatchArray([
+            'foo' => [$closure]
+        ]);
+    }
+);
 
-test("Validator::validate() rules can be one closure when passing an array of rules.", function () {
-    $closureA = function (ValidationContext $context): bool {
-        return true;
-    };
-    $closureB = function (ValidationContext $context): bool {
-        return true;
-    };
+test(
+    'Validator::validate() rules can be one closure when passing an array of rules.',
+    function () {
+        $closureA = function (ValidationContext $context): bool {
+            return true;
+        };
+        $closureB = function (ValidationContext $context): bool {
+            return true;
+        };
 
-    $this->validator->validate(['foo' => [$closureA, $closureB]]);
+        $this->validator->validate(['foo' => [$closureA, $closureB]]);
 
-    expect($this->validator->getRules())->toMatchArray([
-        'foo' => [$closureA, $closureB]
-    ]);
-});
+        expect($this->validator->getRules())->toMatchArray([
+            'foo' => [$closureA, $closureB]
+        ]);
+    }
+);
 
-test("Validator::validate() will execute single closures you pass it.", function () {
+test(
+    'Validator::validate() will execute single closures you pass it.',
+    function () {
 
-    $closure = function (ValidationContext $context): bool {
-        return false;
-    };
+        $closure = function (ValidationContext $context): bool {
+            return false;
+        };
 
-    $this->validator->validate([
-        'foo' => $closure
-    ]);
+        $this->validator->validate([
+            'foo' => $closure
+        ]);
 
-    expect($this->validator->fails())->toBeTruthy()
-        ->and($this->validator->passes())->toBeFalsy();
-
-
-    $closure = function (ValidationContext $context): bool {
-        return true;
-    };
-    $validator = new Validator(['foo' => false]);
-    $validator->validate(['foo' => $closure]);
-
-    expect($validator->passes())->toBeTruthy()
-        ->and($validator->fails())->toBeFalsy();
-});
-
-test("Validator::validate() will execute multiple closures you pass it.", function () {
-
-    $closureA = function (ValidationContext $context): bool {
-        return false;
-    };
-    $closureB = function (ValidationContext $context): bool {
-        return true;
-    };
-
-    $this->validator->validate([
-        'foo' => [$closureA, $closureB]
-    ]);
-
-    expect($this->validator->fails())->toBeTruthy()
-        ->and($this->validator->passes())->toBeFalsy();
+        expect($this->validator->fails())->toBeTruthy()
+            ->and($this->validator->passes())->toBeFalsy();
 
 
-    $closureA = function (ValidationContext $context): bool {
-        return true;
-    };
+        $closure = function (ValidationContext $context): bool {
+            return true;
+        };
+        $validator = new Validator(['foo' => false]);
+        $validator->validate(['foo' => $closure]);
 
-    $closureB =function (ValidationContext $context): bool {
-        return true;
-    };
+        expect($validator->passes())->toBeTruthy()
+            ->and($validator->fails())->toBeFalsy();
+    }
+);
 
-    $validator = new Validator(['foo' => false]);
-    $validator->validate(['foo' => [$closureA, $closureB]]);
+test(
+    'Validator::validate() will execute multiple closures you pass it.',
+    function () {
 
-    expect($validator->fails())->toBeFalsy()
-        ->and($validator->passes())->toBeTruthy();
+        $closureA = function (ValidationContext $context): bool {
+            return false;
+        };
+        $closureB = function (ValidationContext $context): bool {
+            return true;
+        };
 
-});
+        $this->validator->validate([
+            'foo' => [$closureA, $closureB]
+        ]);
 
-test("Validator::validate() will throw an exception at unknown rule type.", function () {
-
-    $float = 1.0;
-
-    expect(fn() => $this->validator->validate(["foo" => $float]))
-        ->toThrow(ValidationDefinitionException::class, "Unknown validation rule type.");
-});
+        expect($this->validator->fails())->toBeTruthy()
+            ->and($this->validator->passes())->toBeFalsy();
 
 
-test("Validator::hasErrors() if there are known errors.", function () {
+        $closureA = function (ValidationContext $context): bool {
+            return true;
+        };
 
-    $validator = new Validator([
-        'foo' => '',
-    ]);
+        $closureB = function (ValidationContext $context): bool {
+            return true;
+        };
 
-    $validator->validate([
-        'foo' => 'boolean'
-    ]);
+        $validator = new Validator(['foo' => false]);
+        $validator->validate(['foo' => [$closureA, $closureB]]);
 
-    expect($validator->fails())->toBeTruthy()
-        ->and($validator->passes())->toBeFalsy();
+        expect($validator->fails())->toBeFalsy()
+            ->and($validator->passes())->toBeTruthy();
+    }
+);
 
-    $errors = $validator->errors();
+test(
+    'Validator::validate() will throw an exception at unknown rule type.',
+    function () {
 
-    expect($validator->hasErrors())->toBeTrue()
-        ->and($errors['foo'])->toEqual("Field foo is not of type boolean.")
-        ->and(count($errors))->toEqual(1);
-});
+        $float = 1.0;
 
-test('Validator::validate() will throw ValidationDefinitionException if a closure does not meet standards.', function () {
+        expect(fn() => $this->validator->validate(["foo" => $float]))
+            ->toThrow(ValidationDefinitionException::class, "Unknown validation rule type.");
+    }
+);
 
-    $badClosure = function () {
-    };
 
-    $validator = new Validator([
-        'foo' => '',
-    ]);
+test(
+    'Validator::hasErrors() if there are known errors.',
+    function () {
 
-    expect(
-        fn() => $validator->validate([
-            'foo' => $badClosure
-        ])
-    )->toThrow(
-        ValidationDefinitionException::class,
-        "The closure for the ‘foo’ field either does not have a return type of bool or does not accept Redbox\Validation\Validator as its first argument.");
-});
+        $validator = new Validator([
+            'foo' => '',
+        ]);
+
+        $validator->validate([
+            'foo' => 'boolean'
+        ]);
+
+        expect($validator->fails())->toBeTruthy()
+            ->and($validator->passes())->toBeFalsy();
+
+        $errors = $validator->errors();
+
+        expect($validator->hasErrors())->toBeTrue()
+            ->and($errors['foo'])->toEqual("Field foo is not of type boolean.")
+            ->and(count($errors))->toEqual(1);
+    }
+);
+
+test(
+    'Validator::validate() will throw ValidationDefinitionException if a closure does not meet standards.',
+    function () {
+
+        $badClosure = function () {
+        };
+
+        $validator = new Validator([
+            'foo' => '',
+        ]);
+
+        expect(
+            fn() => $validator->validate([
+                'foo' => $badClosure
+            ])
+        )->toThrow(
+            ValidationDefinitionException::class,
+            "The closure for the ‘foo’ field either does not have a return type of bool or does not "
+            . "accept Redbox\Validation\Validator as its first argument."
+        );
+    }
+);

@@ -146,7 +146,7 @@ class Validator
      *
      * @return array
      * @throws ValidationDefinitionException
-     * @throws ValidationException
+     * @throws \ReflectionException
      */
     public function validate(array $definitions): array
     {
@@ -162,10 +162,12 @@ class Validator
                 default => [],
             };
 
-           foreach ($closures as $closure) {
+            foreach ($closures as $closure) {
                 if (!TypeResolver::isValidClosure($closure)) {
                     $class = Validator::class;
-                    throw new ValidationDefinitionException("The closure for the ‘{$key}’ field either does not have a return type of bool or does not accept {$class} as its first argument.");
+
+                    throw new ValidationDefinitionException("The closure for the ‘{$key}’ field either does "
+                        . "not have a return type of bool or does not accept {$class} as its first argument.");
                 }
             }
         }
