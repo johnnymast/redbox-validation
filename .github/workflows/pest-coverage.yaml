@@ -2,7 +2,7 @@ name: Test Coverage PHP Package
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   laravel-tests:
