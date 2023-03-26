@@ -29,6 +29,7 @@ jobs:
       - name: PHP Version
         run: php --version
 
+
       # Code quality
 
       - name: Execute tests (Unit and Feature tests) via PestPHP
