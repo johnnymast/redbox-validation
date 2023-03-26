@@ -19,9 +19,36 @@ use Redbox\Validation\Exceptions\ValidationDefinitionException;
 
 class Validator
 {
+    /**
+     * Container for the user
+     * defined validation rules.
+     *
+     * @var array
+     */
     protected array $rules = [];
+
+    /**
+     * Container for the build-in
+     * validation types.
+     *
+     * @var array
+     */
     protected array $types = [];
+
+    /**
+     * Container for validation
+     * errors.
+     *
+     * @var array
+     */
     protected array $errors = [];
+
+    /**
+     * Did the validation pass
+     * yes or no?
+     *
+     * @var bool
+     */
     protected bool $didPass = true;
 
     /**
@@ -34,6 +61,10 @@ class Validator
         $this->defineTypes();
     }
 
+    /**
+     * @return void
+     * @throws \ReflectionException
+     */
     private function defineTypes()
     {
         $this->types = \Redbox\Validation\TypeResolver::resolveTypes(
@@ -43,6 +74,15 @@ class Validator
         );
     }
 
+    /**
+     * Users can define their
+     * own custom validation types.
+     *
+     * @param array $classes
+     *
+     * @return void
+     * @throws \ReflectionException
+     */
     public function defineCustomTypes(array $classes = [])
     {
         $this->types = array_merge($this->types, \Redbox\Validation\TypeResolver::resolveTypes($classes));
@@ -60,8 +100,10 @@ class Validator
     }
 
     /**
-     * @param string $key
-     * @param        $rules
+     * Process rules for the target array.
+     *
+     * @param string $key   The key from the target array.
+     * @param mixed  $rules Validation rules for the key.
      *
      * @return void
      * @throws ValidationDefinitionException
@@ -149,6 +191,12 @@ class Validator
         return $this->target;
     }
 
+    /**
+     * Indicate if the validation
+     * has passed.
+     *
+     * @return bool
+     */
     public function didPass(): bool
     {
         return $this->didPass;
