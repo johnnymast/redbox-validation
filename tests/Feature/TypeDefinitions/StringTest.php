@@ -11,7 +11,6 @@
  * file that was distributed with this source code.
  */
 
-use Redbox\Validation\Exceptions\ValidationException;
 use Redbox\Validation\Validator;
 
 dataset('other_types_then_string', [
@@ -21,7 +20,8 @@ dataset('other_types_then_string', [
     2.0,
     [],
     new stdClass(),
-    function() { },
+    function () {
+    },
     // Resource how ?
 ]);
 
@@ -44,14 +44,14 @@ test('Other types then strings should fail', function (mixed $type = null) {
         'field' => $type,
     ]);
 
-    $this->setName("other types then strings should fail testing with type ".get_debug_type($type));
+    $this->setName("other types then strings should fail testing with type " . get_debug_type($type));
 
-    expect(
-        fn() => $validator->validate([
-            'field' => 'string'
-        ])
-    )->toThrow(ValidationException::class, "Validator failed");
+    $validator->validate([
+        'field' => 'string'
+    ]);
 
+    expect($validator->passes())->toBeFalsy()
+        ->and($validator->fails())->toBeTruthy();
 
     $errors = $validator->errors();
     expect($errors['field'])->toEqual("Field field is not of type string.")

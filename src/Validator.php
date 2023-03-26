@@ -167,7 +167,11 @@ class Validator
                     $context = $this->types[$name];
                 }
 
-                $didFail = $context->run($key, $this->target[$key] ?? '', $this->target, $this)
+                $didFail = $context->run(
+                    key: $key,
+                    value: $this->target[$key] ?? '',
+                    target: $this->target,
+                    validator: $this)
                     ->fails();
 
                 if ($didFail) {
@@ -178,7 +182,6 @@ class Validator
 
         if ($fails > 0) {
             $this->passes = false;
-            throw new ValidationException("Validator failed");
         }
 
         return $this->target;
@@ -201,7 +204,8 @@ class Validator
      *
      * @return bool
      */
-    public function passes(): bool {
+    public function passes(): bool
+    {
         return $this->passes;
     }
 

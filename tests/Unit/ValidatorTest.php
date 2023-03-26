@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Redbox\Validation\Tests\Unit;
 
 use Redbox\Validation\Exceptions\ValidationDefinitionException;
-use Redbox\Validation\Exceptions\ValidationException;
 use Redbox\Validation\ValidationContext;
 use Redbox\Validation\Validator;
 
@@ -92,13 +91,13 @@ test("Validation::validate() will execute single closures you pass it.", functio
 
     $closure = fn(ValidationContext $context) => false;
 
-    expect(
-        fn() => $this->validator->validate([
-            'foo' => $closure
-        ])
-    )->toThrow(ValidationException::class, "Validator failed")
-        ->and($this->validator->passes())->toBeFalsy()
-        ->and($this->validator->fails())->toBeTruthy();
+    $this->validator->validate([
+        'foo' => $closure
+    ]);
+
+    expect($this->validator->fails())->toBeTruthy()
+        ->and($this->validator->passes())->toBeFalsy();
+
 
     $closure = fn(ValidationContext $context) => true;
     $validator = new Validator(['foo' => false]);
@@ -113,12 +112,13 @@ test("Validation::validate() will execute multiple closures you pass it.", funct
     $closureA = fn(ValidationContext $context) => false;
     $closureB = fn(ValidationContext $context) => true;
 
-    expect(
-        fn() => $this->validator->validate([
-            'foo' => [$closureA, $closureB]
-        ])
-    )->toThrow(ValidationException::class, "Validator failed")
-        ->and($this->validator->fails())->toBeTruthy();
+    $this->validator->validate([
+        'foo' => [$closureA, $closureB]
+    ]);
+
+    expect($this->validator->fails())->toBeTruthy()
+        ->and($this->validator->passes())->toBeFalsy();
+
 
     $closureA = fn(ValidationContext $context) => true;
     $closureB = fn(ValidationContext $context) => true;
@@ -126,7 +126,9 @@ test("Validation::validate() will execute multiple closures you pass it.", funct
     $validator = new Validator(['foo' => false]);
     $validator->validate(['foo' => [$closureA, $closureB]]);
 
-    expect($validator->fails())->toBeFalsy();
+    expect($validator->fails())->toBeFalsy()
+        ->and($validator->passes())->toBeTruthy();
+
 });
 
 test("Validator::validate() will throw an exception at unknown rule type.", function () {
@@ -138,17 +140,18 @@ test("Validator::validate() will throw an exception at unknown rule type.", func
 });
 
 
-test("Validation::hasErrors() if there are known errors.", function() {
+test("Validation::hasErrors() if there are known errors.", function () {
 
     $validator = new Validator([
         'foo' => '',
     ]);
 
-    expect(
-        fn() =>$validator->validate([
-            'foo' => 'boolean'
-        ])
-    )->toThrow(ValidationException::class, "Validator failed");
+    $validator->validate([
+        'foo' => 'boolean'
+    ]);
+
+    expect($validator->fails())->toBeTruthy()
+        ->and($validator->passes())->toBeFalsy();
 
     $errors = $validator->errors();
 

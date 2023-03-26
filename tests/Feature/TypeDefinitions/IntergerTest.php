@@ -11,7 +11,6 @@
  * file that was distributed with this source code.
  */
 
-use Redbox\Validation\Exceptions\ValidationException;
 use Redbox\Validation\Validator;
 
 dataset('other_types_then_integer', [
@@ -21,7 +20,8 @@ dataset('other_types_then_integer', [
     2.0,
     [],
     new stdClass(),
-    function() { },
+    function () {
+    },
     // Resource how ?
 ]);
 
@@ -58,11 +58,12 @@ test('Other types then integers should fail', function (mixed $type = null) {
         'field' => $type,
     ]);
 
-    expect(
-        fn() => $validator->validate([
-            'field' => 'integer'
-        ])
-    )->toThrow(ValidationException::class, "Validator failed");
+    $validator->validate([
+        'field' => 'integer'
+    ]);
+
+    expect($validator->passes())->toBeFalsy()
+        ->and($validator->fails())->toBeTruthy();
 
 
     $errors = $validator->errors();

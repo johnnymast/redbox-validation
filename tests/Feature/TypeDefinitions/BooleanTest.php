@@ -11,8 +11,6 @@
  * file that was distributed with this source code.
  */
 
-use Redbox\Validation\Exceptions\ValidationException;
-use Redbox\Validation\Tests\Types\TestDefinitions;
 use Redbox\Validation\Validator;
 
 beforeEach(function () {
@@ -28,10 +26,10 @@ dataset('other_types_then_boolean', [
     2.0,
     [],
     new stdClass(),
-    function() { },
+    function () {
+    },
     // Resource how ?
 ]);
-
 
 
 test('value false should be considered a boolean', function () {
@@ -82,11 +80,13 @@ test('running the boolean type check on a non-existing key in the target array s
         'field' => false,
     ]);
 
-    expect(
-        fn() => $validator->validate([
-            'nonexisting' => 'boolean'
-        ])
-    )->toThrow(ValidationException::class, "Validator failed");
+    $validator->validate([
+        'nonexisting' => 'boolean'
+    ]);
+
+    expect($validator->fails())->toBeTruthy()
+        ->and($validator->passes())->toBeFalsy();
+
 
     $errors = $validator->errors();
     expect(count($errors))->toEqual(1);
@@ -97,11 +97,12 @@ test('Other types then integers should fail', function (mixed $type = null) {
         'field' => $type,
     ]);
 
-    expect(
-        fn() => $validator->validate([
-            'field' => 'boolean'
-        ])
-    )->toThrow(ValidationException::class, "Validator failed");
+    $validator->validate([
+        'field' => 'boolean'
+    ]);
+
+    expect($validator->passes())->toBeFalsy()
+        ->and($validator->fails())->toBeTruthy();
 
 
     $errors = $validator->errors();
