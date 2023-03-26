@@ -10,5 +10,5 @@ jobs:
       - name: PHP Code Style (phpcs)
         uses: chindit/actions-phpcs@master
         with:
-          # Folder to check code style
+          cli: --standard=PSR12
           dir: src/
