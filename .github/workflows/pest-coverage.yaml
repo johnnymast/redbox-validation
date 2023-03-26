@@ -29,7 +29,6 @@ jobs:
       - name: PHP Version
         run: php --version
 
-
       # Code quality
 
       - name: Execute tests (Unit and Feature tests) via PestPHP
@@ -41,6 +40,6 @@ jobs:
       - name: Generate test coverage badge
         uses: timkrase/phpunit-coverage-badge@v1.2.0
         with:
-          coverage_badge_path: 'badge-coverage.svg'
+          coverage_badge_path: 'coverage-badge.svg'
           push_badge: true
           repo_token: ${{ secrets.GITHUB_TOKEN }}
