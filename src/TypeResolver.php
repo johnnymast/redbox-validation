@@ -53,8 +53,7 @@ class TypeResolver
 
         return $callables;
     }
-
-
+    
     /**
      * Read the validation types from a class.
      *
