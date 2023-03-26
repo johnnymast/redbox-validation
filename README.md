@@ -1,6 +1,6 @@
 # Redbox-valiation
 
-Redbox-valiation is a simple to use validation class. The implementation is based on Laravel's (but no a rewrite of)
+Redbox-validation is a simple to use validation class. The implementation is based on Laravel's (but no a rewrite of)
 validation package but has no external when used in your project.
 
 [![Packagist](https://img.shields.io/packagist/v/redbox/validation.svg)](https://packagist.org/packages/redbox/validation)
