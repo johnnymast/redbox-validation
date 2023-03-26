@@ -2,6 +2,7 @@
 
 Redbox-valiation is a simple to use validation class. The implementation is based on Laravel's (but no a rewrite of) validation package but has no external when used in your project.
 
+[![Packagist](https://img.shields.io/packagist/v/redbox/validation.svg)](https://packagist.org/packages/redbox/validation)
 [![Unit Tests](https://github.com/johnnymast/redbox-validation/actions/workflows/Tests.yml/badge.svg)](https://github.com/johnnymast/redbox-validation/actions/workflows/Tests.yml)
 [![PhpCS](https://github.com/johnnymast/redbox-validation/actions/workflows/Phpcs.yaml/badge.svg)](https://github.com/johnnymast/redbox-validation/actions/workflows/Phpcs.yaml)
 [![PhpCS](https://raw.githubusercontent.com/johnnymast/redbox-validation/master/badges/coverage-badge.svg)](https://github.com/johnnymast/redbox-validation/actions/workflows/pest-coverage.yaml)
@@ -9,7 +10,7 @@ Redbox-valiation is a simple to use validation class. The implementation is base
 ## Installation
 
 ```bash
-$ composer create-project -sdev redbox/redbox-package-skeleton ./skel/
+$ composer require redbox/validation@dev-master
 ```
 
 ## Usage
