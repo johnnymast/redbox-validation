@@ -1,4 +1,4 @@
-name: Phpcs
+name: PhpCS
 on: [push]
 
 jobs:
