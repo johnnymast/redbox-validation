@@ -14,8 +14,9 @@ declare(strict_types=1);
 
 namespace Redbox\Validation;
 
-use Redbox\Validation\Exceptions\ValidationException;
 use Redbox\Validation\Exceptions\ValidationDefinitionException;
+use Redbox\Validation\ValidationTypes\TypeDefinitions;
+use Redbox\Validation\Exceptions\ValidationException;
 
 class Validator
 {
@@ -69,9 +70,9 @@ class Validator
      */
     private function defineTypes()
     {
-        $this->types = \Redbox\Validation\TypeResolver::resolveTypes(
+        $this->types = TypeResolver::resolveTypes(
             [
-                \Redbox\Validation\ValidationTypes\TypeDefinitions::class,
+                TypeDefinitions::class,
             ]
         );
     }
@@ -87,7 +88,7 @@ class Validator
      */
     public function defineCustomTypes(array $classes = []): void
     {
-        $this->types = array_merge($this->types, \Redbox\Validation\TypeResolver::resolveTypes($classes));
+        $this->types = array_merge($this->types, TypeResolver::resolveTypes($classes));
     }
 
     /**
@@ -153,6 +154,21 @@ class Validator
         $this->errors = $this->rules = [];
         $this->passes = true;
         $fails = 0;
+
+        foreach ($definitions as $key => $rules) {
+            $closures = match (strtolower(get_debug_type($rules))) {
+                'array' => array_filter($rules, fn($item) => strtolower(get_debug_type($item)) == 'closure'),
+                'closure' => [$rules],
+                default => [],
+            };
+
+           foreach ($closures as $closure) {
+                if (!TypeResolver::isValidClosure($closure)) {
+                    $class = Validator::class;
+                    throw new ValidationDefinitionException("The closure for the ‘{$key}’ field either does not have a return type of bool or does not accept {$class} as its first argument.");
+                }
+            }
+        }
 
         foreach ($definitions as $key => $rules) {
             $this->addRule($key, $rules);

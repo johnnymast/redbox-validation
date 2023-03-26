@@ -10,18 +10,19 @@ require __DIR__ . '/../vendor/autoload.php';
 
 try {
 
-    $validator = new Validator(['foo' => new stdClass()]);
+    $closure =  function(ValidationContext $validator): bool { return true; };
+    $validator = new Validator(['foo' =>'']);
     $data = $validator->validate([
-        'food' => 'boolean'
+        'food' => $closure
     ]);
 
     // Success
-    echo "OI";
-    var_dump($validator->didPass());
+    echo "OI\n";
+    var_dump($validator->passes());
 
 } catch (ValidationException $e) {
 
-    var_dump($validator->didPass());
+    var_dump($validator->passes());
     print_r($validator->getErrors());
 }
 //

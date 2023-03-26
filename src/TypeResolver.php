@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Redbox\Validation;
 
 use Redbox\Validation\Attributes\ValidationRule;
+use ReflectionFunction;
 
 class TypeResolver
 {
@@ -43,6 +44,35 @@ class TypeResolver
         }
 
         return $callables;
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public static function isValidClosure(callable $closure): bool
+    {
+        $function = new \ReflectionFunction($closure);
+        $parameters = $function->getParameters();
+        $returns = $function->getReturnType();
+
+        if ($returns->getName() !== "bool") {
+            return false;
+        }
+
+        if (count($parameters) == 0) {
+            return false;
+        }
+
+        foreach ($parameters as $index => $parameter) {
+            if ($index == 0) {
+                if ($parameter->getType()->getName() !== ValidationContext::class) {
+                    var_dump($parameter->getType()->getName());
+                    return false;
+                };
+            }
+        }
+
+        return true;
     }
 
     /**

@@ -1,7 +1,7 @@
 {
-  "name": "redbox/redbox-package-skeleton",
-  "description": "",
-  "keywords": [],
+  "name": "redbox/validation",
+  "description": "https://github.com/johnnymast/redbox-validation",
+  "keywords": ["php", "validation", ""],
   "type": "library",
   "license": "MIT",
   "authors": [
