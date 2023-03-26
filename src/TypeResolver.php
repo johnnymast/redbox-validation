@@ -55,7 +55,7 @@ class TypeResolver
         $parameters = $function->getParameters();
         $returns = $function->getReturnType();
 
-        if ($returns->getName() !== "bool") {
+        if (!$returns or $returns->getName() !== "bool") {
             return false;
         }
 
@@ -66,7 +66,6 @@ class TypeResolver
         foreach ($parameters as $index => $parameter) {
             if ($index == 0) {
                 if ($parameter->getType()->getName() !== ValidationContext::class) {
-                    var_dump($parameter->getType()->getName());
                     return false;
                 };
             }

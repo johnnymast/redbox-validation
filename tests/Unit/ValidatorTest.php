@@ -67,7 +67,9 @@ test('Validator::validate() can be called with an array of rules classes or rule
 
 test('Validator::validate() rule can be one closure.', function () {
 
-    $closure = fn(ValidationContext $context) => true;
+    $closure = function (ValidationContext $context): bool {
+        return true;
+    };
 
     $this->validator->validate(['foo' => $closure]);
 
@@ -77,8 +79,12 @@ test('Validator::validate() rule can be one closure.', function () {
 });
 
 test("Validator::validate() rules can be one closure when passing an array of rules.", function () {
-    $closureA = fn(ValidationContext $context) => true;
-    $closureB = fn(ValidationContext $context) => true;
+    $closureA = function (ValidationContext $context): bool {
+        return true;
+    };
+    $closureB = function (ValidationContext $context): bool {
+        return true;
+    };
 
     $this->validator->validate(['foo' => [$closureA, $closureB]]);
 
@@ -87,9 +93,11 @@ test("Validator::validate() rules can be one closure when passing an array of ru
     ]);
 });
 
-test("Validation::validate() will execute single closures you pass it.", function () {
+test("Validator::validate() will execute single closures you pass it.", function () {
 
-    $closure = fn(ValidationContext $context) => false;
+    $closure = function (ValidationContext $context): bool {
+        return false;
+    };
 
     $this->validator->validate([
         'foo' => $closure
@@ -99,7 +107,9 @@ test("Validation::validate() will execute single closures you pass it.", functio
         ->and($this->validator->passes())->toBeFalsy();
 
 
-    $closure = fn(ValidationContext $context) => true;
+    $closure = function (ValidationContext $context): bool {
+        return true;
+    };
     $validator = new Validator(['foo' => false]);
     $validator->validate(['foo' => $closure]);
 
@@ -107,10 +117,14 @@ test("Validation::validate() will execute single closures you pass it.", functio
         ->and($validator->fails())->toBeFalsy();
 });
 
-test("Validation::validate() will execute multiple closures you pass it.", function () {
+test("Validator::validate() will execute multiple closures you pass it.", function () {
 
-    $closureA = fn(ValidationContext $context) => false;
-    $closureB = fn(ValidationContext $context) => true;
+    $closureA = function (ValidationContext $context): bool {
+        return false;
+    };
+    $closureB = function (ValidationContext $context): bool {
+        return true;
+    };
 
     $this->validator->validate([
         'foo' => [$closureA, $closureB]
@@ -120,8 +134,13 @@ test("Validation::validate() will execute multiple closures you pass it.", funct
         ->and($this->validator->passes())->toBeFalsy();
 
 
-    $closureA = fn(ValidationContext $context) => true;
-    $closureB = fn(ValidationContext $context) => true;
+    $closureA = function (ValidationContext $context): bool {
+        return true;
+    };
+
+    $closureB =function (ValidationContext $context): bool {
+        return true;
+    };
 
     $validator = new Validator(['foo' => false]);
     $validator->validate(['foo' => [$closureA, $closureB]]);
@@ -140,7 +159,7 @@ test("Validator::validate() will throw an exception at unknown rule type.", func
 });
 
 
-test("Validation::hasErrors() if there are known errors.", function () {
+test("Validator::hasErrors() if there are known errors.", function () {
 
     $validator = new Validator([
         'foo' => '',
@@ -158,4 +177,22 @@ test("Validation::hasErrors() if there are known errors.", function () {
     expect($validator->hasErrors())->toBeTrue()
         ->and($errors['foo'])->toEqual("Field foo is not of type boolean.")
         ->and(count($errors))->toEqual(1);
+});
+
+test('Validator::validate() will throw ValidationDefinitionException if a closure does not meet standards.', function () {
+
+    $badClosure = function () {
+    };
+
+    $validator = new Validator([
+        'foo' => '',
+    ]);
+
+    expect(
+        fn() => $validator->validate([
+            'foo' => $badClosure
+        ])
+    )->toThrow(
+        ValidationDefinitionException::class,
+        "The closure for the ‘foo’ field either does not have a return type of bool or does not accept Redbox\Validation\Validator as its first argument.");
 });
