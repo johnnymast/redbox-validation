@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1679831060">
-  <project timestamp="1679831060">
+<coverage generated="1679831522">
+  <project timestamp="1679831522">
     <file name="/home/runner/work/redbox-validation/redbox-validation/src/Attributes/ValidationRule.php">
       <class name="Redbox\Validation\Attributes\ValidationRule" namespace="global">
         <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
@@ -92,7 +92,7 @@
     </file>
     <file name="/home/runner/work/redbox-validation/redbox-validation/src/Validator.php">
       <class name="Redbox\Validation\Validator" namespace="global">
-        <metrics complexity="19" methods="11" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="43" coveredstatements="43" elements="54" coveredelements="54"/>
+        <metrics complexity="19" methods="11" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="44" coveredstatements="44" elements="55" coveredelements="55"/>
       </class>
       <line num="61" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="40"/>
       <line num="63" type="stmt" count="40"/>
@@ -132,23 +132,24 @@
       <line num="173" type="stmt" count="37"/>
       <line num="174" type="stmt" count="37"/>
       <line num="175" type="stmt" count="37"/>
-      <line num="177" type="stmt" count="37"/>
-      <line num="178" type="stmt" count="25"/>
-      <line num="183" type="stmt" count="37"/>
-      <line num="184" type="stmt" count="25"/>
-      <line num="187" type="stmt" count="37"/>
-      <line num="196" type="method" name="fails" visibility="public" complexity="1" crap="1" count="25"/>
-      <line num="198" type="stmt" count="25"/>
-      <line num="207" type="method" name="passes" visibility="public" complexity="1" crap="1" count="25"/>
-      <line num="209" type="stmt" count="25"/>
-      <line num="220" type="method" name="addError" visibility="public" complexity="1" crap="1" count="23"/>
-      <line num="222" type="stmt" count="23"/>
-      <line num="231" type="method" name="hasErrors" visibility="public" complexity="1" crap="1" count="1"/>
-      <line num="233" type="stmt" count="1"/>
-      <line num="241" type="method" name="errors" visibility="public" complexity="1" crap="1" count="29"/>
-      <line num="243" type="stmt" count="29"/>
-      <metrics loc="246" ncloc="121" classes="1" methods="11" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="43" coveredstatements="43" elements="54" coveredelements="54"/>
+      <line num="176" type="stmt" count="37"/>
+      <line num="178" type="stmt" count="37"/>
+      <line num="179" type="stmt" count="25"/>
+      <line num="184" type="stmt" count="37"/>
+      <line num="185" type="stmt" count="25"/>
+      <line num="188" type="stmt" count="37"/>
+      <line num="197" type="method" name="fails" visibility="public" complexity="1" crap="1" count="25"/>
+      <line num="199" type="stmt" count="25"/>
+      <line num="208" type="method" name="passes" visibility="public" complexity="1" crap="1" count="25"/>
+      <line num="210" type="stmt" count="25"/>
+      <line num="221" type="method" name="addError" visibility="public" complexity="1" crap="1" count="23"/>
+      <line num="223" type="stmt" count="23"/>
+      <line num="232" type="method" name="hasErrors" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="234" type="stmt" count="1"/>
+      <line num="242" type="method" name="errors" visibility="public" complexity="1" crap="1" count="29"/>
+      <line num="244" type="stmt" count="29"/>
+      <metrics loc="247" ncloc="122" classes="1" methods="11" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="44" coveredstatements="44" elements="55" coveredelements="55"/>
     </file>
-    <metrics files="7" loc="589" ncloc="311" classes="5" methods="25" coveredmethods="25" conditionals="0" coveredconditionals="0" statements="82" coveredstatements="82" elements="107" coveredelements="107"/>
+    <metrics files="7" loc="590" ncloc="312" classes="5" methods="25" coveredmethods="25" conditionals="0" coveredconditionals="0" statements="83" coveredstatements="83" elements="108" coveredelements="108"/>
   </project>
 </coverage>
