@@ -1,11 +1,13 @@
-[![Unit Tests](https://github.com/johnnymast/redbox-validation/actions/workflows/Tests.yml/badge.svg)](https://github.com/johnnymast/redbox-validation/actions/workflows/Tests.yml)
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/johnnymast/redbox-package-skeleton/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/johnnymast/redbox-package-skeleton/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/johnnymast/redbox-package-skeleton/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/johnnymast/redbox-package-skeleton/?branch=master)
 
-# Redbox-package-skeleton
+# Redbox-package-skeleton (WIP)
 
 This is just a skeleton for my php packages.
+
+[![Unit Tests](https://github.com/johnnymast/redbox-validation/actions/workflows/Tests.yml/badge.svg)](https://github.com/johnnymast/redbox-validation/actions/workflows/Tests.yml)
+
 
 ## installation
 
