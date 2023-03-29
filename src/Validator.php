@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Redbox\Validation;
 
 use Redbox\Validation\Exceptions\ValidationDefinitionException;
+use Redbox\Validation\ValidationTypes\InternetTypeDefinitions;
 use Redbox\Validation\ValidationTypes\TypeDefinitions;
 
 class Validator
@@ -67,11 +68,12 @@ class Validator
      * @return void
      * @throws \ReflectionException
      */
-    private function defineTypes()
+    private function defineTypes(): void
     {
         $this->types = TypeResolver::resolveTypes(
             [
                 TypeDefinitions::class,
+                InternetTypeDefinitions::class,
             ]
         );
     }

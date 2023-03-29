@@ -19,7 +19,24 @@ use Redbox\Validation\ValidationContext;
 
 class InternetTypeDefinitions
 {
-    #[ValidationRule('ip4')]
+    #[ValidationRule('ip')]
+    public function isIP(ValidationContext $context): bool
+    {
+        return ($context->keyExists() && (filter_var(
+            $context->getValue(),
+            FILTER_VALIDATE_IP,
+            FILTER_FLAG_IPV4
+        ) ||
+                    filter_var(
+                        $context->getValue(),
+                        FILTER_VALIDATE_IP,
+                        FILTER_FLAG_IPV6
+                    ))
+            )
+            or $context->addError("Field {$context->getKey()} is not a valid IP address.");
+    }
+
+    #[ValidationRule('ipv4')]
     public function isIPv4(ValidationContext $context): bool
     {
         return ($context->keyExists() && filter_var(
@@ -30,7 +47,7 @@ class InternetTypeDefinitions
             or $context->addError("Field {$context->getKey()} is not a valid IPv4 address.");
     }
 
-    #[ValidationRule('ip6')]
+    #[ValidationRule('ipv6')]
     public function isIPv6(ValidationContext $context): bool
     {
         return ($context->keyExists() && filter_var(
@@ -40,6 +57,4 @@ class InternetTypeDefinitions
         ))
             or $context->addError("Field {$context->getKey()} is not a valid IPv6 address.");
     }
-
-
 }

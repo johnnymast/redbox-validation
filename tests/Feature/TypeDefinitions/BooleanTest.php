@@ -3,7 +3,7 @@
 /**
  * This file is part of the Redbox-validator package.
  *
- * (c) Johnny Mast <mastjohnny@gmail.com
+ * (c) Johnny Mast <mastjohnny@gmail.com>
  *
  * PHP version 8.1
  *
