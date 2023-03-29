@@ -57,4 +57,11 @@ class InternetTypeDefinitions
         ))
             or $context->addError("Field {$context->getKey()} is not a valid IPv6 address.");
     }
+
+    #[ValidationRule('email')]
+    public function isEmail(ValidationContext $context): bool
+    {
+        return ($context->keyExists() && filter_var($context->getValue(), FILTER_VALIDATE_EMAIL))
+            or $context->addError("Field {$context->getKey()} is not a valid Email address.");
+    }
 }

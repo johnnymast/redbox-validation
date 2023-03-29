@@ -19,6 +19,7 @@ $ composer require redbox/validation
 The package is flexible to use with an easy syntax.
 
 ## Basic Usage
+
 ```php 
 use Redbox\Validation\Validator;
 
@@ -44,7 +45,7 @@ if ($validator->fails()) {
 
 ## Using closures
 
-You can use your own closures to add custom rules 
+You can use your own closures to add custom rules
 
 ```php
 
@@ -80,7 +81,9 @@ if ($validator->fails()) {
 }
 ```
 
-## Available Rules
+### Available Rules
+
+## Type definitions
 
 The following validation rules are available with this package.
 
@@ -90,6 +93,14 @@ The following validation rules are available with this package.
 | boolean | bool  | The field under validation must be of type boolean. |
 | integer | int   | The field under validation must be of type integer. |
 
+### Types related to the internet
+
+| Type  | Alias | Description                                                                 |
+|-------|-------|-----------------------------------------------------------------------------|
+| ip    | N/A   | The field under validation must be a valid ipv address (type ipv4 or ipv6). |
+| ip4   | N/A   | The field under validation must be a valid ipv4 address.                    |
+| ip6   | N/A   | The field under validation must be a valid ipv6 address.                    |
+| email | N/A   | The field under validation must be a valid email address.                   |
 
 ## License
 
