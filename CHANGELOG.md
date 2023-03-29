@@ -1,3 +1,7 @@
-## 1.0
+## v0.20
 
-This is the first stable release of redbox-package-skeleton
+ *
+
+## v0.10
+
+ * initial release
