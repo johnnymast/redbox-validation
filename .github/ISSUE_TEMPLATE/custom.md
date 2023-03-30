@@ -25,6 +25,9 @@ You can copy and paste this example and change it for yourself. You will have to
 
 https://github.com/johnnymast/redbox-validation/blob/a8667ddb9a9cd4a61d2f9dc8cd866f90077ec14d/src/Validator.php#L70-L77
 
+## What to do after your implementation 
+
+After you have done this you will have to write a test for it in the feature test directory [winch can be found here](https://github.com/johnnymast/redbox-validation/tree/master/tests/Feature). 
 
 ## When you are done
 
