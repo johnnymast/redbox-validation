@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1680160807">
-  <project timestamp="1680160807">
+<coverage generated="1680160975">
+  <project timestamp="1680160975">
     <file name="/home/runner/work/redbox-validation/redbox-validation/src/Attributes/ValidationRule.php">
       <class name="Redbox\Validation\Attributes\ValidationRule" namespace="global">
         <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
