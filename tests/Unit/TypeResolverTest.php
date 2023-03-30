@@ -12,9 +12,11 @@
 
 declare(strict_types=1);
 
-use Redbox\Validation\Tests\Types\TestDefinitions;
+namespace Redbox\Validation\Tests\Unit;
+
 use Redbox\Validation\TypeResolver;
 use Redbox\Validation\ValidationContext;
+use Redbox\Validation\Tests\Types\TestDefinitions;
 
 test(
     'Type definitions should be automatically detected',

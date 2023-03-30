@@ -161,7 +161,6 @@ class Validator
         $this->passes = true;
         $fails = 0;
 
-
         foreach ($definitions as $key => $rules) {
             $closures = match (strtolower(get_debug_type($rules))) {
                 'array' => array_filter($rules, fn($item) => strtolower(get_debug_type($item)) == 'closure'),
@@ -191,7 +190,6 @@ class Validator
                 }
             }
         }
-
 
         foreach ($definitions as $key => $rules) {
             $this->addRule($key, $rules);

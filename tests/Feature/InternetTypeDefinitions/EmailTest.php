@@ -1,5 +1,7 @@
 <?php
 
+namespace Redbox\Validation\Tests\Feature\InternetTypeDefinitions;
+
 use Redbox\Validation\Validator;
 
 dataset(

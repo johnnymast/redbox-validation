@@ -21,7 +21,7 @@ $validator = new Validator([
 ]);
 
 $data = $validator->validate([
-    'food' => 'string'
+    'foo' => 'string'
 ]);
 
 /**
@@ -33,4 +33,7 @@ if ($validator->fails()) {
      * Handle errors use $validator->errors()
      * to get the errors.
      */
+    echo "Validation failed\n";
+} else {
+    echo "Validation passed\n";
 }

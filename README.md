@@ -1,4 +1,4 @@
-# Redbox-valiation
+# Redbox-validator
 
 Redbox-validation is a simple to use validation class. The implementation is based on Laravel's (but no a rewrite of)
 validation package but has no external when used in your project.
@@ -28,7 +28,7 @@ $validator = new Validator([
 ]);
 
 $data = $validator->validate([
-    'food' => 'string'
+    'foo' => 'string'
 ]);
 
 /**
@@ -40,6 +40,9 @@ if ($validator->fails()) {
      * Handle errors use $validator->errors()
      * to get the errors.
      */
+    echo "Validation failed\n";
+} else {
+    echo "Validation passed\n";
 }
 ```
 

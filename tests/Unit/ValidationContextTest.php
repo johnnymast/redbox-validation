@@ -12,6 +12,8 @@
 
 declare(strict_types=1);
 
+namespace Redbox\Validation\Tests\Unit;
+
 use Redbox\Validation\ValidationContext;
 use Redbox\Validation\Validator;
 

@@ -13,7 +13,10 @@
 
 declare(strict_types=1);
 
+namespace Redbox\Validation\Tests\Feature\TypeDefinitions;
+
 use Redbox\Validation\Validator;
+use stdClass;
 
 dataset(
     'other_types_then_integer',

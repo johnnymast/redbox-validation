@@ -13,6 +13,8 @@
 
 declare(strict_types=1);
 
+namespace Redbox\Validation\Tests\Feature\InternetTypeDefinitions;
+
 use Redbox\Validation\Validator;
 
 dataset(

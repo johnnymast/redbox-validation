@@ -15,20 +15,20 @@ declare(strict_types=1);
 namespace Redbox\Validation\Tests\Unit;
 
 use Redbox\Validation\Exceptions\ValidationDefinitionException;
-use Redbox\Validation\Tests\Types\TestDefinitions;
 use Redbox\Validation\ValidationContext;
 use Redbox\Validation\Validator;
+use Redbox\Validation\Tests\Types\TestDefinitions;
 
 beforeEach(
     function () {
         $this->validator = new Validator(
             [
-            'foo' => false,
+                'foo' => false,
             ]
         );
         $this->validator->defineCustomTypes(
             [
-            TestDefinitions::class
+                TestDefinitions::class
             ]
         );
     }
@@ -40,13 +40,13 @@ test(
 
         $this->validator->validate(
             [
-            'foo' => 'bar'
+                'foo' => 'bar'
             ]
         );
 
         expect($this->validator->getRules())->toMatchArray(
             [
-            'foo' => ['bar']
+                'foo' => ['bar']
             ]
         );
     }
@@ -60,7 +60,7 @@ test(
 
         expect($this->validator->getRules())->toMatchArray(
             [
-            'foo' => ['bar', 'baz']
+                'foo' => ['bar', 'baz']
             ]
         );
     }
@@ -74,7 +74,7 @@ test(
 
         expect($this->validator->getRules())->toMatchArray(
             [
-            'foo' => ['bar', 'baz', 'qux']
+                'foo' => ['bar', 'baz', 'qux']
             ]
         );
     }
@@ -88,7 +88,7 @@ test(
 
         expect($this->validator->getRules())->toMatchArray(
             [
-            'foo' => ['bar', 'baz', 'qux']
+                'foo' => ['bar', 'baz', 'qux']
             ]
         );
     }
@@ -106,7 +106,7 @@ test(
 
         expect($this->validator->getRules())->toMatchArray(
             [
-            'foo' => [$closure]
+                'foo' => [$closure]
             ]
         );
     }
@@ -126,7 +126,7 @@ test(
 
         expect($this->validator->getRules())->toMatchArray(
             [
-            'foo' => [$closureA, $closureB]
+                'foo' => [$closureA, $closureB]
             ]
         );
     }
@@ -142,7 +142,7 @@ test(
 
         $this->validator->validate(
             [
-            'foo' => $closure
+                'foo' => $closure
             ]
         );
 
@@ -174,7 +174,7 @@ test(
 
         $this->validator->validate(
             [
-            'foo' => [$closureA, $closureB]
+                'foo' => [$closureA, $closureB]
             ]
         );
 
@@ -216,13 +216,13 @@ test(
 
         $validator = new Validator(
             [
-            'foo' => '',
+                'foo' => '',
             ]
         );
 
         $validator->validate(
             [
-            'foo' => 'boolean'
+                'foo' => 'boolean'
             ]
         );
 
@@ -246,14 +246,14 @@ test(
 
         $validator = new Validator(
             [
-            'foo' => '',
+                'foo' => '',
             ]
         );
 
         expect(
             fn() => $validator->validate(
                 [
-                'foo' => $badClosure
+                    'foo' => $badClosure
                 ]
             )
         )->toThrow(
