@@ -263,3 +263,31 @@ test(
         );
     }
 );
+
+
+test(
+    'Validator::validate() will throw ValidationDefinitionException if a given validation type unknown.',
+    function () {
+
+        $badClosure = function () {
+        };
+
+        $validator = new Validator(
+            [
+                'foo' => '',
+            ]
+        );
+
+        expect(
+            fn() => $validator->validate(
+                [
+                    'foo' => 'xyzBL33Pxyz'
+                ]
+            )
+        )->toThrow(
+            ValidationDefinitionException::class,
+            "The validation type ‘xyzBL33Pxyz’ does not exist."
+            . "Check the documentation for the supported validation types."
+        );
+    }
+);
