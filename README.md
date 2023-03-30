@@ -19,6 +19,7 @@ $ composer require redbox/validation
 The package is flexible to use with an easy syntax.
 
 ## Basic Usage
+
 ```php 
 use Redbox\Validation\Validator;
 
@@ -89,6 +90,7 @@ The following validation rules are available with this package.
 | string  | N/A   | The field under validation must be of type string.  |
 | boolean | bool  | The field under validation must be of type boolean. |
 | integer | int   | The field under validation must be of type integer. |
+| array   | array | The field under validation must be of type array.   |
 
 ### Types related to the internet
 

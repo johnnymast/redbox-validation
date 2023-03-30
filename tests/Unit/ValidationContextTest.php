@@ -22,9 +22,12 @@ test(
 
         $validator = new Validator($target);
 
-        $context = new ValidationContext('foo', function (ValidationContext $context) {
-            return false;
-        });
+        $context = new ValidationContext(
+            'foo',
+            function (ValidationContext $context) {
+                return false;
+            }
+        );
 
         $context->run(
             key: 'foo',

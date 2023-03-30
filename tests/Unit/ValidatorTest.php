@@ -19,26 +19,36 @@ use Redbox\Validation\Tests\Types\TestDefinitions;
 use Redbox\Validation\ValidationContext;
 use Redbox\Validation\Validator;
 
-beforeEach(function () {
-    $this->validator = new Validator([
-        'foo' => false,
-    ]);
-    $this->validator->defineCustomTypes([
-        TestDefinitions::class
-    ]);
-});
+beforeEach(
+    function () {
+        $this->validator = new Validator(
+            [
+            'foo' => false,
+            ]
+        );
+        $this->validator->defineCustomTypes(
+            [
+            TestDefinitions::class
+            ]
+        );
+    }
+);
 
 test(
     'Validator::validate() can be called with a string of one single rule',
     function () {
 
-        $this->validator->validate([
+        $this->validator->validate(
+            [
             'foo' => 'bar'
-        ]);
+            ]
+        );
 
-        expect($this->validator->getRules())->toMatchArray([
+        expect($this->validator->getRules())->toMatchArray(
+            [
             'foo' => ['bar']
-        ]);
+            ]
+        );
     }
 );
 
@@ -48,9 +58,11 @@ test(
 
         $this->validator->validate(['foo' => 'bar|baz']);
 
-        expect($this->validator->getRules())->toMatchArray([
+        expect($this->validator->getRules())->toMatchArray(
+            [
             'foo' => ['bar', 'baz']
-        ]);
+            ]
+        );
     }
 );
 
@@ -60,9 +72,11 @@ test(
 
         $this->validator->validate(['foo' => ['bar', 'baz', 'qux']]);
 
-        expect($this->validator->getRules())->toMatchArray([
+        expect($this->validator->getRules())->toMatchArray(
+            [
             'foo' => ['bar', 'baz', 'qux']
-        ]);
+            ]
+        );
     }
 );
 
@@ -72,9 +86,11 @@ test(
 
         $this->validator->validate(['foo' => ['bar', 'baz', 'qux']]);
 
-        expect($this->validator->getRules())->toMatchArray([
+        expect($this->validator->getRules())->toMatchArray(
+            [
             'foo' => ['bar', 'baz', 'qux']
-        ]);
+            ]
+        );
     }
 );
 
@@ -88,9 +104,11 @@ test(
 
         $this->validator->validate(['foo' => $closure]);
 
-        expect($this->validator->getRules())->toMatchArray([
+        expect($this->validator->getRules())->toMatchArray(
+            [
             'foo' => [$closure]
-        ]);
+            ]
+        );
     }
 );
 
@@ -106,9 +124,11 @@ test(
 
         $this->validator->validate(['foo' => [$closureA, $closureB]]);
 
-        expect($this->validator->getRules())->toMatchArray([
+        expect($this->validator->getRules())->toMatchArray(
+            [
             'foo' => [$closureA, $closureB]
-        ]);
+            ]
+        );
     }
 );
 
@@ -120,9 +140,11 @@ test(
             return false;
         };
 
-        $this->validator->validate([
+        $this->validator->validate(
+            [
             'foo' => $closure
-        ]);
+            ]
+        );
 
         expect($this->validator->fails())->toBeTruthy()
             ->and($this->validator->passes())->toBeFalsy();
@@ -150,9 +172,11 @@ test(
             return true;
         };
 
-        $this->validator->validate([
+        $this->validator->validate(
+            [
             'foo' => [$closureA, $closureB]
-        ]);
+            ]
+        );
 
         expect($this->validator->fails())->toBeTruthy()
             ->and($this->validator->passes())->toBeFalsy();
@@ -190,13 +214,17 @@ test(
     'Validator::hasErrors() if there are known errors.',
     function () {
 
-        $validator = new Validator([
+        $validator = new Validator(
+            [
             'foo' => '',
-        ]);
+            ]
+        );
 
-        $validator->validate([
+        $validator->validate(
+            [
             'foo' => 'boolean'
-        ]);
+            ]
+        );
 
         expect($validator->fails())->toBeTruthy()
             ->and($validator->passes())->toBeFalsy();
@@ -216,14 +244,18 @@ test(
         $badClosure = function () {
         };
 
-        $validator = new Validator([
+        $validator = new Validator(
+            [
             'foo' => '',
-        ]);
+            ]
+        );
 
         expect(
-            fn() => $validator->validate([
+            fn() => $validator->validate(
+                [
                 'foo' => $badClosure
-            ])
+                ]
+            )
         )->toThrow(
             ValidationDefinitionException::class,
             "The closure for the ‘foo’ field either does not have a return type of bool or does not "

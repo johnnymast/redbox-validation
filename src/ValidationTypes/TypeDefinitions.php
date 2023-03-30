@@ -36,9 +36,16 @@ class TypeDefinitions
 
     #[ValidationRule('integer')]
     #[ValidationRule('int')]
-    public function integer(ValidationContext $context): bool
+    public function isInteger(ValidationContext $context): bool
     {
         return ($context->keyExists() && is_integer($context->getValue()))
             or $context->addError("Field {$context->getKey()} is not of type integer.");
+    }
+
+    #[ValidationRule('array')]
+    public function isArray(ValidationContext $context): bool
+    {
+        return ($context->keyExists() && is_array($context->getValue()))
+            or $context->addError("Field {$context->getKey()} is not of type array.");
     }
 }

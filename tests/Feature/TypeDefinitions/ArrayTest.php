@@ -13,36 +13,39 @@
 
 declare(strict_types=1);
 
+namespace Redbox\Validation\Tests\Feature\TypeDefinitions;
+
 use Redbox\Validation\Validator;
+use stdClass;
 
 dataset(
-    'other_types_then_string',
+    'other_types_then_array',
     [
     null,
-    true,
+    "string",
     1,
     2.0,
-    [],
     new stdClass(),
     function () {
     },
+    true,
     // Resource how ?
     ]
 );
 
 test(
-    'value \'test\' should be considered a string',
+    'An array should pass the test.',
     function () {
 
         $validator = new Validator(
             [
-            'field' => 'test',
+            'field' => [],
             ]
         );
 
         $validator->validate(
             [
-            'field' => 'string'
+            'field' => 'array'
             ]
         );
 
@@ -51,8 +54,9 @@ test(
     }
 );
 
+
 test(
-    'Other types then strings should fail',
+    'Other types then array should fail',
     function (mixed $type = null) {
         $validator = new Validator(
             [
@@ -62,7 +66,7 @@ test(
 
         $validator->validate(
             [
-            'field' => 'string'
+            'field' => 'array'
             ]
         );
 
@@ -70,7 +74,7 @@ test(
             ->and($validator->fails())->toBeTruthy();
 
         $errors = $validator->errors();
-        expect($errors['field'])->toEqual("Field field is not of type string.")
+        expect($errors['field'])->toEqual("Field field is not of type array.")
             ->and(count($errors))->toEqual(1);
     }
-)->with('other_types_then_string');
+)->with('other_types_then_array');

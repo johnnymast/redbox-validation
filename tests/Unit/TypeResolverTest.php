@@ -16,14 +16,17 @@ use Redbox\Validation\Tests\Types\TestDefinitions;
 use Redbox\Validation\TypeResolver;
 use Redbox\Validation\ValidationContext;
 
-test('Type definitions should be automatically detected', function () {
+test(
+    'Type definitions should be automatically detected',
+    function () {
 
-    $resolved = TypeResolver::resolveTypes([TestDefinitions::class]);
-    expect($resolved)->toHaveKey('foo')
-        ->toHaveKey('bar')
-        ->toHaveKey('baz')
-        ->toHaveKey('qux');
-});
+        $resolved = TypeResolver::resolveTypes([TestDefinitions::class]);
+        expect($resolved)->toHaveKey('foo')
+            ->toHaveKey('bar')
+            ->toHaveKey('baz')
+            ->toHaveKey('qux');
+    }
+);
 
 test(
     'TypeResolver::isValidClosure() should return false if the closure has no parameters.',

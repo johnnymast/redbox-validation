@@ -15,7 +15,9 @@ declare(strict_types=1);
 
 use Redbox\Validation\Validator;
 
-dataset('invalid_ipv4_addresses', [
+dataset(
+    'invalid_ipv4_addresses',
+    [
     '300.168.0.1', // invalid
     '192.300.0.1', // invalid
     '192.168.300.1', // invalid
@@ -26,41 +28,59 @@ dataset('invalid_ipv4_addresses', [
     '192.168.0.', // invalid
     '192.168.-1', // invalid
     '192.168.0', // invalid
-]);
+    ]
+);
 
-dataset('valid_ip4_addresses', [
+dataset(
+    'valid_ip4_addresses',
+    [
     '192.168.0.1',
     '10.0.0.1',
     '172.16.0.1',
     '192.168.1.1',
-]);
+    ]
+);
 
-it('Validator::validate() should detect valid ipv4 addresses.', function ($ip) {
+it(
+    'Validator::validate() should detect valid ipv4 addresses.',
+    function ($ip) {
 
-    $validator = new Validator([
-        'ip' => $ip,
-    ]);
+        $validator = new Validator(
+            [
+            'ip' => $ip,
+            ]
+        );
 
-    $validator->validate([
-        'ip' => 'ipv4'
+        $validator->validate(
+            [
+            'ip' => 'ipv4'
 
-    ]);
+            ]
+        );
 
-    expect($validator->passes())->toBeTruthy()
+        expect($validator->passes())->toBeTruthy()
         ->and($validator->fails())->toBeFalsy();
-})->with('valid_ip4_addresses');
+    }
+)->with('valid_ip4_addresses');
 
 
-it('Validator::validate() should detect invalid ipv4 addresses.', function ($ip) {
-    $validator = new Validator([
-        'ip' => $ip,
-    ]);
+it(
+    'Validator::validate() should detect invalid ipv4 addresses.',
+    function ($ip) {
+        $validator = new Validator(
+            [
+            'ip' => $ip,
+            ]
+        );
 
-    $validator->validate([
-        'ip' => 'ipv4'
+        $validator->validate(
+            [
+            'ip' => 'ipv4'
 
-    ]);
+            ]
+        );
 
-    expect($validator->passes())->toBeFalsy()
+        expect($validator->passes())->toBeFalsy()
         ->and($validator->fails())->toBeTruthy();
-})->with('invalid_ipv4_addresses');
+    }
+)->with('invalid_ipv4_addresses');
