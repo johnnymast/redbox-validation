@@ -93,6 +93,7 @@ The following validation rules are available with this package.
 | array   | N/A    | The field under validation must be of type array.   |
 | object  | N/A    | The field under validation must be of type object.  |
 | float   | double | The field under validation must be of type float.   |
+| numeric | N/A    | The field under validation must be a number.        |
 
 ### Types related to the internet
 

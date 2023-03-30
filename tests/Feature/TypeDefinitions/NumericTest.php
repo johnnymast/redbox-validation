@@ -19,33 +19,45 @@ use Redbox\Validation\Validator;
 use stdClass;
 
 dataset(
-    'other_types_then_float',
+    'other_types_then_numeric',
     [
         null,
         "string",
-        1,
-        [],
+        new stdClass(),
         function () {
         },
-        new stdClass(),
         true,
+        [],
+        // Resource how ?
     ]
 );
 
+dataset('valid_numeric_notations', [
+    "42",
+    1234, // decimal number
+    0123, // octal number (equivalent to 83 decimal)
+    0o123, // octal number (as of PHP 8.1.0)
+    0x1A, // hexadecimal number (equivalent to 26 decimal)
+    0b11111111, // binary number (equivalent to 255 decimal)
+    1_234_567, // decimal number (as of PHP 7.4.0)
+    '1337e0', // exponential notation
+    '02471' // leading zero is allowed
+
+]);
 
 test(
-    'An float should pass the test.',
+    'An number should pass the test.',
     function () {
 
         $validator = new Validator(
             [
-                'field' => 1.0,
+                'field' => 25,
             ]
         );
 
         $validator->validate(
             [
-                'field' => 'float'
+                'field' => 'numeric'
             ]
         );
 
@@ -54,29 +66,30 @@ test(
     }
 );
 
+
 test(
-    'An double should pass the test.',
-    function () {
+    'All number notations should pass the test.',
+    function ($numeric) {
 
         $validator = new Validator(
             [
-                'field' => 1.0,
+                'field' => $numeric,
             ]
         );
 
         $validator->validate(
             [
-                'field' => 'double'
+                'field' => 'numeric'
             ]
         );
 
         $errors = $validator->errors();
         expect(count($errors))->toEqual(0);
     }
-);
+)->with('valid_numeric_notations');
 
 test(
-    'Other types then float should fail when validating type float',
+    'Other types then numbers should fail',
     function (mixed $type = null) {
         $validator = new Validator(
             [
@@ -86,7 +99,7 @@ test(
 
         $validator->validate(
             [
-                'field' => 'float'
+                'field' => 'numeric'
             ]
         );
 
@@ -94,32 +107,7 @@ test(
             ->and($validator->fails())->toBeTruthy();
 
         $errors = $validator->errors();
-        expect($errors['field'])->toEqual("Field field is not of type float.")
+        expect($errors['field'])->toEqual("Field field is not numeric.")
             ->and(count($errors))->toEqual(1);
     }
-)->with('other_types_then_float');
-
-
-test(
-    'Other types then float should fail when validating type double',
-    function (mixed $type = null) {
-        $validator = new Validator(
-            [
-                'field' => $type,
-            ]
-        );
-
-        $validator->validate(
-            [
-                'field' => 'double'
-            ]
-        );
-
-        expect($validator->passes())->toBeFalsy()
-            ->and($validator->fails())->toBeTruthy();
-
-        $errors = $validator->errors();
-        expect($errors['field'])->toEqual("Field field is not of type float.")
-            ->and(count($errors))->toEqual(1);
-    }
-)->with('other_types_then_float');
+)->with('other_types_then_numeric');

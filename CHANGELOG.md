@@ -1,5 +1,6 @@
 ## v0.20
 
+* added type numeric
 * added type float and its alias double
 * added type object 
 * added type array 
