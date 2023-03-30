@@ -11,7 +11,9 @@ $validator = new Validator($data);
 
 $validator->validate(
     [
-        'name' => 'required|email|unique:users',
+//        'name' => 'required|email|unique:users',
+        'name' => 'string',
+//        'name' => 'required|email|unique:users',
 //                    'email' => 'required|email|unique:users',
 //                    'password' => 'required|min:6|confirmed',
     ]

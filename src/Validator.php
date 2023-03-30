@@ -161,12 +161,26 @@ class Validator
         $this->passes = true;
         $fails = 0;
 
+
         foreach ($definitions as $key => $rules) {
             $closures = match (strtolower(get_debug_type($rules))) {
                 'array' => array_filter($rules, fn($item) => strtolower(get_debug_type($item)) == 'closure'),
                 'closure' => [$rules],
                 default => [],
             };
+
+            $types = match (strtolower(get_debug_type($rules))) {
+                'array' => array_filter($rules, fn($item) => strtolower(get_debug_type($item)) == 'string'),
+                'string' => (strpos($rules, '|') > -1) ? explode('|', $rules) : [$rules],
+                default => [],
+            };
+
+            foreach ($types as $type) {
+                if (!isset($this->types[$type])) {
+                    throw new ValidationDefinitionException("The validation type ‘{$type}’ does not exist."
+                        . "Check the documentation for the supported validation types.");
+                }
+            }
 
             foreach ($closures as $closure) {
                 if (!TypeResolver::isValidClosure($closure)) {
@@ -177,6 +191,7 @@ class Validator
                 }
             }
         }
+
 
         foreach ($definitions as $key => $rules) {
             $this->addRule($key, $rules);
