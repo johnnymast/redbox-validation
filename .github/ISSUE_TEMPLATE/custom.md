@@ -21,6 +21,10 @@ Here is the sample implementation of the 'string' type in the code.
 
 https://github.com/johnnymast/redbox-validation/blob/65f941782eccd967121d865d5fc74dd2bd2b497c/src/ValidationTypes/TypeDefinitions.php#L30-L35
 
+You can copy and paste this example and change it for yourself. You will have to change the attribute value to what you will be implementing as a type, it might go unsaid but make sure the function name is unique. If the category of your new type does not match any existing definition class in ***src/ValidationTypes*** folder you might add a new class. If you do make sure you add your class to the defineTypes function in ***src/Validator.php***.
+
+https://github.com/johnnymast/redbox-validation/blob/a8667ddb9a9cd4a61d2f9dc8cd866f90077ec14d/src/Validator.php#L70-L77
+
 
 ## When you are done
 
