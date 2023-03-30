@@ -90,7 +90,8 @@ The following validation rules are available with this package.
 | string  | N/A   | The field under validation must be of type string.  |
 | boolean | bool  | The field under validation must be of type boolean. |
 | integer | int   | The field under validation must be of type integer. |
-| array   | array | The field under validation must be of type array.   |
+| array   | N/A   | The field under validation must be of type array.   |
+| object  | N/A   | The field under validation must be of type object.  |
 
 ### Types related to the internet
 

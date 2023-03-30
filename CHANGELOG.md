@@ -1,5 +1,6 @@
 ## v0.20
 
+* added type object 
 * added type array 
 * added internet type ip
 * added internet type ipv4

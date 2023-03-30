@@ -48,4 +48,11 @@ class TypeDefinitions
         return ($context->keyExists() && is_array($context->getValue()))
             or $context->addError("Field {$context->getKey()} is not of type array.");
     }
+
+    #[ValidationRule('object')]
+    public function isObject(ValidationContext $context): bool
+    {
+        return ($context->keyExists() && is_object($context->getValue()))
+            or $context->addError("Field {$context->getKey()} is not of type object.");
+    }
 }
