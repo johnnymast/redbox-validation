@@ -19,7 +19,6 @@ $ composer require redbox/validation
 The package is flexible to use with an easy syntax.
 
 ## Basic Usage
-
 ```php 
 use Redbox\Validation\Validator;
 
@@ -81,9 +80,7 @@ if ($validator->fails()) {
 }
 ```
 
-### Available Rules
-
-## Type definitions
+## Available Rules
 
 The following validation rules are available with this package.
 
