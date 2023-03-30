@@ -1,6 +1,6 @@
 {
-  "name": "redbox/validation",
-  "description": "https://github.com/johnnymast/redbox-validation",
+  "name": "redbox/validator",
+  "description": "https://github.com/johnnymast/redbox-validator",
   "keywords": ["php", "validation"],
   "type": "library",
   "license": "MIT",
