@@ -1,10 +1,9 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
-assignees: ''
-
+name: Good first issue
+about: Request a few feature for Redbox Validator
+title: "[DATE]: [FEATURE NAME]"
+labels: enhancement, feature request
+assignees: johnnymast
 ---
 
 **Is your feature request related to a problem? Please describe.**
