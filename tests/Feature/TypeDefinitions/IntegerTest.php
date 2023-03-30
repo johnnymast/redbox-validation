@@ -18,15 +18,15 @@ use Redbox\Validation\Validator;
 dataset(
     'other_types_then_integer',
     [
-    null,
-    true,
-    "string",
-    2.0,
-    [],
-    new stdClass(),
-    function () {
-    },
-    // Resource how ?
+        null,
+        true,
+        "string",
+        2.0,
+        [],
+        new stdClass(),
+        function () {
+        },
+        // Resource how ?
     ]
 );
 
@@ -36,13 +36,34 @@ test(
 
         $validator = new Validator(
             [
-            'field' => 10,
+                'field' => 10,
             ]
         );
 
         $validator->validate(
             [
-            'field' => 'integer'
+                'field' => 'integer'
+            ]
+        );
+
+        $errors = $validator->errors();
+        expect(count($errors))->toEqual(0);
+    }
+);
+
+test(
+    'value 10 should be considered a int (alias)',
+    function () {
+
+        $validator = new Validator(
+            [
+                'field' => 10,
+            ]
+        );
+
+        $validator->validate(
+            [
+                'field' => 'int'
             ]
         );
 
@@ -57,13 +78,13 @@ test(
 
         $validator = new Validator(
             [
-            'field' => 10,
+                'field' => 10,
             ]
         );
 
         $validator->validate(
             [
-            'field' => 'integer'
+                'field' => 'integer'
             ]
         );
 
@@ -77,18 +98,44 @@ test(
     function (mixed $type = null) {
         $validator = new Validator(
             [
-            'field' => $type,
+                'field' => $type,
             ]
         );
 
         $validator->validate(
             [
-            'field' => 'integer'
+                'field' => 'integer'
             ]
         );
 
         expect($validator->passes())->toBeFalsy()
-        ->and($validator->fails())->toBeTruthy();
+            ->and($validator->fails())->toBeTruthy();
+
+
+        $errors = $validator->errors();
+        expect($errors['field'])->toEqual("Field field is not of type integer.")
+            ->and(count($errors))->toEqual(1);
+    }
+)->with('other_types_then_integer');
+
+
+test(
+    'Other types then int should fail (using int as alias of integer)',
+    function (mixed $type = null) {
+        $validator = new Validator(
+            [
+                'field' => $type,
+            ]
+        );
+
+        $validator->validate(
+            [
+                'field' => 'int'
+            ]
+        );
+
+        expect($validator->passes())->toBeFalsy()
+            ->and($validator->fails())->toBeTruthy();
 
 
         $errors = $validator->errors();

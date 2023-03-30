@@ -85,13 +85,14 @@ if ($validator->fails()) {
 
 The following validation rules are available with this package.
 
-| Type    | Alias | Description                                         |
-|---------|-------|-----------------------------------------------------|
-| string  | N/A   | The field under validation must be of type string.  |
-| boolean | bool  | The field under validation must be of type boolean. |
-| integer | int   | The field under validation must be of type integer. |
-| array   | N/A   | The field under validation must be of type array.   |
-| object  | N/A   | The field under validation must be of type object.  |
+| Type    | Alias  | Description                                         |
+|---------|--------|-----------------------------------------------------|
+| string  | N/A    | The field under validation must be of type string.  |
+| boolean | bool   | The field under validation must be of type boolean. |
+| integer | int    | The field under validation must be of type integer. |
+| array   | N/A    | The field under validation must be of type array.   |
+| object  | N/A    | The field under validation must be of type object.  |
+| float   | double | The field under validation must be of type float.   |
 
 ### Types related to the internet
 

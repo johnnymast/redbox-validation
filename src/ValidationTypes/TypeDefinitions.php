@@ -55,4 +55,19 @@ class TypeDefinitions
         return ($context->keyExists() && is_object($context->getValue()))
             or $context->addError("Field {$context->getKey()} is not of type object.");
     }
+
+    #[ValidationRule('float')]
+    #[ValidationRule('double')]
+    public function isFloat(ValidationContext $context): bool
+    {
+        return ($context->keyExists() && is_float($context->getValue()))
+            or $context->addError("Field {$context->getKey()} is not of type float.");
+    }
+
+    #[ValidationRule('numeric')]
+    public function isNumeric(ValidationContext $context): bool
+    {
+        return ($context->keyExists() && is_numeric($context->getValue()))
+            or $context->addError("Field {$context->getKey()} is not numeric.");
+    }
 }

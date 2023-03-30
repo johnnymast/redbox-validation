@@ -63,6 +63,27 @@ test(
 );
 
 test(
+    'value false should be considered a bool (alias)',
+    function () {
+
+        $validator = new Validator(
+            [
+                'field' => false,
+            ]
+        );
+
+        $validator->validate(
+            [
+                'field' => 'bool'
+            ]
+        );
+
+        $errors = $validator->errors();
+        expect(count($errors))->toEqual(0);
+    }
+);
+
+test(
     '[ALIAS] value false should be considered a bool',
     function () {
 
@@ -130,7 +151,7 @@ test(
 );
 
 test(
-    'Other types then integers should fail',
+    'Other types then integers should fail when using type boolean',
     function (mixed $type = null) {
         $validator = new Validator(
             [
@@ -146,6 +167,32 @@ test(
 
         expect($validator->passes())->toBeFalsy()
         ->and($validator->fails())->toBeTruthy();
+
+
+        $errors = $validator->errors();
+        expect($errors['field'])->toEqual("Field field is not of type boolean.")
+            ->and(count($errors))->toEqual(1);
+    }
+)->with('other_types_then_boolean');
+
+
+test(
+    'Other types then integers should fail when using type alias bool',
+    function (mixed $type = null) {
+        $validator = new Validator(
+            [
+                'field' => $type,
+            ]
+        );
+
+        $validator->validate(
+            [
+                'field' => 'bool'
+            ]
+        );
+
+        expect($validator->passes())->toBeFalsy()
+            ->and($validator->fails())->toBeTruthy();
 
 
         $errors = $validator->errors();
