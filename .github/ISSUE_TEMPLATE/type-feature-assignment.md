@@ -1,5 +1,5 @@
 ---
-name: Feature assignment
+name: Type Feature assignment
 about: Create a new open issue was a good first issue.
 title: add type 'xx' as a wrapper around yy
 labels: enhancement, good first issue
