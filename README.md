@@ -86,7 +86,38 @@ if ($validator->fails()) {
 
 ## Custom error messages
 
+```php
+use Redbox\Validation\Validator;
 
+$validator = new Validator([
+    'foo' => 'bleep'
+]);
+
+$data = $validator->validate(
+    [
+        'foo' => 'int'
+    ],
+    [
+        'foo' => 'This is my custom error message for field foo.'
+    ]
+);
+
+/**
+ * Validator::passes() is also
+ * available.
+ */
+if ($validator->fails()) {
+    /**
+     * Handle errors use $validator->errors()
+     * to get the errors.
+     */
+    echo "Validation failed\n";
+    print_r($validator->errors());
+} else {
+    echo "Validation passed\n";
+}
+
+```
 
 ## Available Rules
 

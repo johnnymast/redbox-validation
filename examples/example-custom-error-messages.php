@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 require __DIR__ . '/autoload.php';
 
-use Redbox\Validation\ValidationContext;
 use Redbox\Validation\Validator;
 
 $validator = new Validator([
