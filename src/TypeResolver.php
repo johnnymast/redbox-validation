@@ -99,3 +99,4 @@ class TypeResolver
         return $result;
     }
 }
+
