@@ -1,3 +1,7 @@
+## v0.30
+
+* Added custom error messages
+
 ## v0.20
 
 * added type numeric
