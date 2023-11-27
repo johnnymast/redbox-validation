@@ -24,14 +24,20 @@ class TypeDefinitions
     public function isBoolean(ValidationContext $context): bool
     {
         return ($context->keyExists() && is_bool($context->getValue()))
-            or $context->addError("Field {$context->getKey()} is not of type boolean.");
+            or $context->addError(
+                $context->hasCustomErrorMessage() ? $context->getsCustomErrorMessage(
+                ) : "Field {$context->getKey()} is not of type boolean."
+            );
     }
 
     #[ValidationRule('string')]
     public function string(ValidationContext $context): bool
     {
         return ($context->keyExists() && is_string($context->getValue()))
-            or $context->addError("Field {$context->getKey()} is not of type string.");
+            or $context->addError(
+                $context->hasCustomErrorMessage() ? $context->getsCustomErrorMessage(
+                ) : "Field {$context->getKey()} is not of type string."
+            );
     }
 
     #[ValidationRule('integer')]
@@ -39,21 +45,30 @@ class TypeDefinitions
     public function isInteger(ValidationContext $context): bool
     {
         return ($context->keyExists() && is_integer($context->getValue()))
-            or $context->addError("Field {$context->getKey()} is not of type integer.");
+            or $context->addError(
+                $context->hasCustomErrorMessage() ? $context->getsCustomErrorMessage(
+                ) : "Field {$context->getKey()} is not of type integer."
+            );
     }
 
     #[ValidationRule('array')]
     public function isArray(ValidationContext $context): bool
     {
         return ($context->keyExists() && is_array($context->getValue()))
-            or $context->addError("Field {$context->getKey()} is not of type array.");
+            or $context->addError(
+                $context->hasCustomErrorMessage() ? $context->getsCustomErrorMessage(
+                ) : "Field {$context->getKey()} is not of type array."
+            );
     }
 
     #[ValidationRule('object')]
     public function isObject(ValidationContext $context): bool
     {
         return ($context->keyExists() && is_object($context->getValue()))
-            or $context->addError("Field {$context->getKey()} is not of type object.");
+            or $context->addError(
+                $context->hasCustomErrorMessage() ? $context->getsCustomErrorMessage(
+                ) : "Field {$context->getKey()} is not of type object."
+            );
     }
 
     #[ValidationRule('float')]
@@ -61,13 +76,19 @@ class TypeDefinitions
     public function isFloat(ValidationContext $context): bool
     {
         return ($context->keyExists() && is_float($context->getValue()))
-            or $context->addError("Field {$context->getKey()} is not of type float.");
+            or $context->addError(
+                $context->hasCustomErrorMessage() ? $context->getsCustomErrorMessage(
+                ) : "Field {$context->getKey()} is not of type float."
+            );
     }
 
     #[ValidationRule('numeric')]
     public function isNumeric(ValidationContext $context): bool
     {
         return ($context->keyExists() && is_numeric($context->getValue()))
-            or $context->addError("Field {$context->getKey()} is not numeric.");
+            or $context->addError(
+                $context->hasCustomErrorMessage() ? $context->getsCustomErrorMessage(
+                ) : "Field {$context->getKey()} is not numeric."
+            );
     }
 }

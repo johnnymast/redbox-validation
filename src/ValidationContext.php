@@ -20,9 +20,9 @@ class ValidationContext
      * Reference to the validator
      * class.
      *
-     * @var Validator
+     * @var Validator|null
      */
-    protected Validator $validator;
+    protected ?Validator $validator = null;
 
     /**
      * The value to validate.
@@ -54,6 +54,13 @@ class ValidationContext
      * @var bool
      */
     protected bool $passes = true;
+
+    /**
+     * Custom error string defined by the user.
+     *
+     * @var string
+     */
+    protected string $customErrorMessage = '';
 
     /**
      * ValidationContext constructor.
@@ -121,6 +128,26 @@ class ValidationContext
     }
 
     /**
+     * Did the user defined a custom error message?
+     *
+     * @return bool
+     */
+    public function hasCustomErrorMessage(): bool
+    {
+        return (strlen($this->customErrorMessage) > 0);
+    }
+
+    /**
+     * Return the custom error message.
+     *
+     * @return string
+     */
+    public function getsCustomErrorMessage(): string
+    {
+        return $this->customErrorMessage;
+    }
+
+    /**
      * Add an error in the validator.
      *
      * @param string $error The error string.
@@ -129,7 +156,7 @@ class ValidationContext
      */
     public function addError(string $error): bool
     {
-        if ($this->validator) {
+        if ($this->validator !== null) {
             $this->validator->addError($this->key, $error);
         }
         return false;
@@ -145,12 +172,18 @@ class ValidationContext
      *
      * @return $this
      */
-    public function run(string $key, mixed $value, array $target, Validator $validator): ValidationContext
-    {
+    public function run(
+        string $key,
+        mixed $value,
+        array $target,
+        Validator $validator,
+        string $customErrorMessage = ''
+    ): ValidationContext {
         $this->validator = $validator;
         $this->key = $key;
         $this->value = $value;
         $this->target = $target;
+        $this->customErrorMessage = $customErrorMessage;
 
         $this->passes = call_user_func($this->method, $this);
         return $this;

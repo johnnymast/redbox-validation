@@ -84,6 +84,10 @@ if ($validator->fails()) {
 }
 ```
 
+## Custom error messages
+
+
+
 ## Available Rules
 
 The following validation rules are available with this package.

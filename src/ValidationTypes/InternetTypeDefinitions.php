@@ -23,45 +23,57 @@ class InternetTypeDefinitions
     public function isIP(ValidationContext $context): bool
     {
         return ($context->keyExists() && (filter_var(
-            $context->getValue(),
-            FILTER_VALIDATE_IP,
-            FILTER_FLAG_IPV4
-        ) ||
+                        $context->getValue(),
+                        FILTER_VALIDATE_IP,
+                        FILTER_FLAG_IPV4
+                    ) ||
                     filter_var(
                         $context->getValue(),
                         FILTER_VALIDATE_IP,
                         FILTER_FLAG_IPV6
                     ))
             )
-            or $context->addError("Field {$context->getKey()} is not a valid IP address.");
+            or $context->addError(
+                $context->hasCustomErrorMessage() ? $context->getsCustomErrorMessage(
+                ) : "Field {$context->getKey()} is not a valid IP address."
+            );
     }
 
     #[ValidationRule('ipv4')]
     public function isIPv4(ValidationContext $context): bool
     {
         return ($context->keyExists() && filter_var(
-            $context->getValue(),
-            FILTER_VALIDATE_IP,
-            FILTER_FLAG_IPV4
-        ))
-            or $context->addError("Field {$context->getKey()} is not a valid IPv4 address.");
+                    $context->getValue(),
+                    FILTER_VALIDATE_IP,
+                    FILTER_FLAG_IPV4
+                ))
+            or $context->addError(
+                $context->hasCustomErrorMessage() ? $context->getsCustomErrorMessage(
+                ) : "Field {$context->getKey()} is not a valid IPv4 address."
+            );
     }
 
     #[ValidationRule('ipv6')]
     public function isIPv6(ValidationContext $context): bool
     {
         return ($context->keyExists() && filter_var(
-            $context->getValue(),
-            FILTER_VALIDATE_IP,
-            FILTER_FLAG_IPV6
-        ))
-            or $context->addError("Field {$context->getKey()} is not a valid IPv6 address.");
+                    $context->getValue(),
+                    FILTER_VALIDATE_IP,
+                    FILTER_FLAG_IPV6
+                ))
+            or $context->addError(
+                $context->hasCustomErrorMessage() ? $context->getsCustomErrorMessage(
+                ) : "Field {$context->getKey()} is not a valid IPv6 address."
+            );
     }
 
     #[ValidationRule('email')]
     public function isEmail(ValidationContext $context): bool
     {
         return ($context->keyExists() && filter_var($context->getValue(), FILTER_VALIDATE_EMAIL))
-            or $context->addError("Field {$context->getKey()} is not a valid Email address.");
+            or $context->addError(
+                $context->hasCustomErrorMessage() ? $context->getsCustomErrorMessage(
+                ) : "Field {$context->getKey()} is not a valid Email address."
+            );
     }
 }

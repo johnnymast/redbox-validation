@@ -65,8 +65,8 @@ class Validator
     }
 
     /**
-     * @return void
      * @throws \ReflectionException
+     * @return void
      */
     private function defineTypes(): void
     {
@@ -84,8 +84,8 @@ class Validator
      *
      * @param array $classes
      *
-     * @return void
      * @throws \ReflectionException
+     * @return void
      */
     public function defineCustomTypes(array $classes = []): void
     {
@@ -106,13 +106,14 @@ class Validator
     /**
      * Process rules for the target array.
      *
-     * @param string $key   The key from the target array.
-     * @param mixed  $rules Validation rules for the key.
+     * @param string      $key   The key from the target array.
+     * @param mixed       $rules Validation rules for the key.
+     * @param string|null $error Custom error message.
      *
+     * @throws \Redbox\Validation\Exceptions\ValidationDefinitionException
      * @return void
-     * @throws ValidationDefinitionException
      */
-    private function addRule(string $key, mixed $rules): void
+    private function addRule(string $key, mixed $rules, string $error = null): void
     {
         $this->rules[$key] = match (strtolower(get_debug_type($rules))) {
             'closure' => [$rules],
@@ -149,14 +150,14 @@ class Validator
      * </code>
      *
      * @param array $definitions The validation rules.
+     * @param array $errors      Custom error messages.
      *
-     * @return array
-     * @throws ValidationDefinitionException
+     * @throws \Redbox\Validation\Exceptions\ValidationDefinitionException
      * @throws \ReflectionException
+     * @return array
      */
-    public function validate(array $definitions): array
+    public function validate(array $definitions = [], array $errors = []): array
     {
-
         $this->errors = $this->rules = [];
         $this->passes = true;
         $fails = 0;
@@ -176,8 +177,10 @@ class Validator
 
             foreach ($types as $type) {
                 if (!isset($this->types[$type])) {
-                    throw new ValidationDefinitionException("The validation type ‘{$type}’ does not exist."
-                        . "Check the documentation for the supported validation types.");
+                    throw new ValidationDefinitionException(
+                        "The validation type ‘{$type}’ does not exist."
+                        . "Check the documentation for the supported validation types."
+                    );
                 }
             }
 
@@ -185,8 +188,10 @@ class Validator
                 if (!TypeResolver::isValidClosure($closure)) {
                     $class = Validator::class;
 
-                    throw new ValidationDefinitionException("The closure for the ‘{$key}’ field either does "
-                        . "not have a return type of bool or does not accept {$class} as its first argument.");
+                    throw new ValidationDefinitionException(
+                        "The closure for the ‘{$key}’ field either does "
+                        . "not have a return type of bool or does not accept {$class} as its first argument."
+                    );
                 }
             }
         }
@@ -208,7 +213,8 @@ class Validator
                     key: $key,
                     value: $this->target[$key] ?? '',
                     target: $this->target,
-                    validator: $this
+                    validator: $this,
+                    customErrorMessage: $errors[$key] ?? null,
                 )
                     ->fails();
 
