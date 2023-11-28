@@ -214,7 +214,7 @@ class Validator
                     value: $this->target[$key] ?? '',
                     target: $this->target,
                     validator: $this,
-                    customErrorMessage: $errors[$key] ?? null,
+                    customErrorMessage: $errors[$key] ?? '',
                 )
                     ->fails();
 
